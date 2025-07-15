@@ -1,3 +1,6 @@
+using Datos;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // habilitar el registro de controladores
@@ -6,6 +9,10 @@ builder.Services.AddControllers();
 // habilitar el registro de Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configurar la cadena de conexión a la base de datos
+builder.Services.AddDbContext<AppContextDb>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
