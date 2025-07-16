@@ -6,7 +6,7 @@ namespace Entidades
 {
     public class Producto
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         [StringLength(150, ErrorMessage = "El nombre no puede exceder los 100 caracteres.")]
         public string Nombre { get; set; }

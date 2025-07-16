@@ -1,6 +1,6 @@
-namespace TestingProject
+namespace CategoriaServiceTest
 {
-    public class ProductServiceTesting
+    public class UnitTest1
     {
         [Fact]
         public void Test1()

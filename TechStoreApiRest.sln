@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStoreApiRest", "TechStoreApiRest\TechStoreApiRest.csproj", "{3EC735C3-0CDF-4DD4-A3EB-25B54CB38CBA}"
 EndProject
@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entidades", "Entidades\Enti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servicios", "Servicios\Servicios.csproj", "{FFB4D0C7-602B-473D-82BF-8B36AB17673D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductServiceTest", "TestingProject\ProductServiceTest.csproj", "{EBCEA095-8887-4D4C-9CBA-64007023433B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductoServiceTest", "TestingProject\ProductoServiceTest.csproj", "{EBCEA095-8887-4D4C-9CBA-64007023433B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "Datos\Datos.csproj", "{BBF9F345-3D8D-4BE2-81C9-87C5F7479774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategoriaServiceTest", "CategoriaServiceTest\CategoriaServiceTest.csproj", "{E0AD7450-D6C3-4705-AA9D-49743B158FAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{BBF9F345-3D8D-4BE2-81C9-87C5F7479774}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBF9F345-3D8D-4BE2-81C9-87C5F7479774}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBF9F345-3D8D-4BE2-81C9-87C5F7479774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AD7450-D6C3-4705-AA9D-49743B158FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AD7450-D6C3-4705-AA9D-49743B158FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AD7450-D6C3-4705-AA9D-49743B158FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AD7450-D6C3-4705-AA9D-49743B158FAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

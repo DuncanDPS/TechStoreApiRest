@@ -14,6 +14,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppContextDb>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Registrar el servicio de productos
+builder.Services.AddScoped<Servicios.IServicios.IProductoService, Servicios.ProductoService>();
+
+
+
 var app = builder.Build();
 
 // Habilita Swagger solo en desarrollo
