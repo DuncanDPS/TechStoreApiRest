@@ -17,6 +17,20 @@ namespace TechStoreApiRest.Controllers
             _productoService = productoService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObtenerTodosLosProductos()
+        {
+            try
+            {
+                var productos = await _productoService.ObtenerTodosLosProductos();
+                return Ok(productos); // devuelve 200 OK con la lista de productos
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar los productos: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CrearProducto(Producto producto)
         {
@@ -32,7 +46,7 @@ namespace TechStoreApiRest.Controllers
             catch(ArgumentException ex)
             {
                 return BadRequest(ex.Message);
-            }
+            }   
         }
     }
 }

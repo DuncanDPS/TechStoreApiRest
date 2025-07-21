@@ -9,13 +9,14 @@ namespace Entidades
 {
     public class Categoria
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "El nombre no puede exceder los 100 caracteres.")]
         public string Nombre { get; set; }
         [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres.")]
         public string Descripcion { get; set; }
-        // Relación con Producto
+        
+        //Relación con Producto
         public ICollection<Producto>? Productos { get; set; } = new List<Producto>();
 
     }

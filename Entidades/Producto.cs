@@ -6,7 +6,7 @@ namespace Entidades
 {
     public class Producto
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         [Required]
         [StringLength(150, ErrorMessage = "El nombre no puede exceder los 100 caracteres.")]
         public string Nombre { get; set; }
@@ -22,7 +22,7 @@ namespace Entidades
         // Relación con Categoria
         [Required]
         public Guid CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        public Categoria? Categoria { get; set; }
 
     }
 }

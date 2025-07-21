@@ -16,8 +16,15 @@ builder.Services.AddDbContext<AppContextDb>(options =>
 
 // Registrar el servicio de productos
 builder.Services.AddScoped<Servicios.IServicios.IProductoService, Servicios.ProductoService>();
+// Registra el servicio de categorias
+builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, Servicios.CategoriaService>();
 
-
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
 var app = builder.Build();
 

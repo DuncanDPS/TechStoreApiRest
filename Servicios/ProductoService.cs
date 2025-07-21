@@ -14,18 +14,19 @@ namespace Servicios
             _context = context;
         }
 
-        public Task<Producto> ActualizarProducto(Producto producto)
+        public async Task<IEnumerable<Producto>> ObtenerTodosLosProductos()
         {
-            throw new NotImplementedException();
+            // obtenemos todos los productos de la base de datos
+            return await _context.Productos.Include(p => p.Categoria).ToListAsync();
         }
 
-        // TODO: Hacer el metodo y luego la prueba unitaria
+
         public async Task<Producto> CrearProducto(Producto producto)
         {
             // recibimos el producto y miramos si es nulo
-            if(producto == null)
+            if (producto == null)
             {
-                throw new ArgumentNullException(nameof(producto), "El producto no puede ser nulo.");   
+                throw new ArgumentNullException(nameof(producto), "El producto no puede ser nulo.");
             }
             // validamos los datos del producto
             if (string.IsNullOrWhiteSpace(producto.Nombre) || producto.Precio <= 0 || producto.Stock < 0)
@@ -47,6 +48,14 @@ namespace Servicios
 
         }
 
+        public Task<Producto> ActualizarProducto(Producto producto)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+        
+
         public Task<bool> EliminarProducto(Guid id)
         {
             throw new NotImplementedException();
@@ -57,9 +66,6 @@ namespace Servicios
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Producto>> ObtenerTodosLosProductos()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
