@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Servicios.IServicios;
 using Datos;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Servicios
@@ -68,7 +69,15 @@ namespace Servicios
 
         public async Task<IEnumerable<Categoria>> ObtenerTodasLasCategorias()
         {
-            throw new NotImplementedException();
+            // obtenemos todas las categorias de la base de datos
+            var categorias = await _context.Categorias.ToListAsync();
+            // si no hay categorias, devolvemos una lista vacía
+            if (categorias == null || !categorias.Any())
+            {
+                return new List<Categoria>();
+            }
+            // si hay categorias, las devolvemos
+            return categorias;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TechStoreApiRest.Mappers;
 
 
 
@@ -17,7 +18,12 @@ namespace TechStoreApiRest.Controllers
             _categoriaService = categoriaService;
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Crea una nueva categoria.
+        /// </summary>
+        /// <param name="categoria">Categoria que se creara</param>
+        /// <returns>devuelve la categoria creada</returns>
+        [HttpPost("CrearCategoria")]
         public async Task<IActionResult> CrearCategoria(Categoria categoria)
         {
             // validamos el modelo recibido
@@ -37,5 +43,20 @@ namespace TechStoreApiRest.Controllers
             }
         }
 
+        [HttpGet("ObtenerTodos")]
+        public async Task<IActionResult> ObtenerTodasLasCategorias()
+        {
+            // devueve todas las categorias usando dto
+            try
+            {
+                var categorias = await _categoriaService.ObtenerTodasLasCategorias();
+                var categoriasDto = categorias.Select(c => c.ToDto()).ToList(); // mapeamos las categorias a CategoriaDto
+                return Ok(categoriasDto); // devuelve 200 OK con la lista de categorias mapeadas
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar las categorias: {ex.Message}");
+            }
+        }
     }
 }
