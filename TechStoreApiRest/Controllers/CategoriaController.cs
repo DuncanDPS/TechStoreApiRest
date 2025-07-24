@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TechStoreApiRest.DTOS;
 using TechStoreApiRest.Mappers;
 
 
@@ -24,7 +25,7 @@ namespace TechStoreApiRest.Controllers
         /// <param name="categoria">Categoria que se creara</param>
         /// <returns>devuelve la categoria creada</returns>
         [HttpPost("CrearCategoria")]
-        public async Task<IActionResult> CrearCategoria(Categoria categoria)
+        public async Task<IActionResult> CrearCategoria(CategoriaDto categoriaDto)
         {
             // validamos el modelo recibido
             if (!ModelState.IsValid)
@@ -33,9 +34,13 @@ namespace TechStoreApiRest.Controllers
             }
             try
             {
+               // mapeamos el dto a la entidad Categoria
+                var categoria = categoriaDto.ToEntity();
                 // llamamos al servicio para crear la categoria
                 var categoriaCreada = await _categoriaService.CrearCategoria(categoria);
-                return CreatedAtAction(nameof(CrearCategoria), new { id = categoriaCreada.Id }, categoriaCreada); // code 201
+                // mapeamos la entidad creada a CategoriaDto
+                var categoriaCreadaDto = categoriaCreada.ToDto();
+                return CreatedAtAction(nameof(ObtenerTodasLasCategorias), new { id = categoriaCreadaDto.Id }, categoriaCreadaDto); // devuelve 201 Created con la nueva categoria
             }
             catch (ArgumentException ex)
             {
@@ -43,6 +48,10 @@ namespace TechStoreApiRest.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene todas las categorias.
+        /// </summary>
+        /// <returns>Devuelve todas las categorias existentes</returns>
         [HttpGet("ObtenerTodos")]
         public async Task<IActionResult> ObtenerTodasLasCategorias()
         {
@@ -56,6 +65,34 @@ namespace TechStoreApiRest.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar las categorias: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Obtiene una categoria por su ID.
+        /// </summary>
+        /// <param name="id">id de la categoria a recuperar</param>
+        /// <returns>devuelve la categoria segun el id indicado</returns>
+        [HttpGet("ObtenerPorId/{id}")]
+        public async Task<IActionResult> ObtenerCategoriaPorId(Guid id)
+        {
+            try
+            {
+                var categoria = await _categoriaService.ObtenerCategoriaPorId(id);
+                if (categoria == null)
+                {
+                    return NotFound($"Categoria con ID {id} no encontrada.");
+                }
+                var categoriaDto = categoria.ToDto(); // mapeamos la categoria a CategoriaDto
+                return Ok(categoriaDto); // devuelve 200 OK con la categoria mapeada
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message); // code 404
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar la categoria: {ex.Message}");
             }
         }
     }

@@ -64,7 +64,15 @@ namespace Servicios
 
         public async Task<Categoria> ObtenerCategoriaPorId(Guid id)
         {
-            throw new NotImplementedException();
+            // buscamos la categoria por id
+            var categoria = await _context.Categorias.FindAsync(id);
+            // si no existe, devolvemos una excepción
+            if (categoria == null)
+            {
+                throw new KeyNotFoundException($"Categoria con ID {id} no encontrada.");
+            }
+            // si existe, la devolvemos
+            return categoria;
         }
 
         public async Task<IEnumerable<Categoria>> ObtenerTodasLasCategorias()
