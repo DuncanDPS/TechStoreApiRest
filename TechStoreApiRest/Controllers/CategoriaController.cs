@@ -95,5 +95,28 @@ namespace TechStoreApiRest.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar la categoria: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Elimina una categoria segun el id Especificado
+        /// </summary>
+        /// <param name="id">id especifico de una categoria</param>
+        /// <returns>devuelve true si la categoria fue eliminada</returns>
+        [HttpDelete("EliminarCategoria/{id}")]
+        public async Task<IActionResult> EliminarCategoria(Guid id)
+        {
+            try
+            {
+                var eliminado = await _categoriaService.EliminarCategoria(id);
+                if (!eliminado)
+                {
+                    return NotFound($"La Categoria con id {id}  no fue encontrada");
+                }
+                return NoContent(); // se elimino la categoria
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al eliminar la categoria: {ex.Message}");
+            }
+        }
     }
 }

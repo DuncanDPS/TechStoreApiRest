@@ -59,7 +59,16 @@ namespace Servicios
 
         public async Task<bool> EliminarCategoria(Guid id)
         {
-            throw new NotImplementedException();
+            // buscamos la categoria por id
+            var categoria = await _context.Categorias.FindAsync(id);
+            // si no existe, devolvemos false
+            if (categoria == null)
+            {
+                throw new KeyNotFoundException($"Categoria con ID {id} no encontrada.");
+            }
+            // si existe, la eliminamos
+            _context.Categorias.Remove(categoria);
+            return await _context.SaveChangesAsync() > 0; // devolvemos true si se elimino correctamente, de lo contrario false
         }
 
         public async Task<Categoria> ObtenerCategoriaPorId(Guid id)
