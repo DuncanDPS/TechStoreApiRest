@@ -23,6 +23,7 @@ namespace Servicios
             _context = context;
         }
 
+        // TODO: Implementar metodo para actualizar Cat
         public async Task<Categoria> ActualizarCategoria(Categoria categoria)
         {
             throw new NotImplementedException();

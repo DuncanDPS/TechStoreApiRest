@@ -15,6 +15,13 @@ namespace Datos
         // Definimos las entidades que serán mapeadas a la base de datos
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Producto> Productos { get; set; }
-        
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Producto>().Property(p => p.Precio).HasPrecision(18, 2);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.IServicios;
@@ -23,6 +24,7 @@ namespace TechStoreApiRest.Controllers
         /// Recupera todos los productos.
         /// </summary>
         /// <returns>Retorna todos los productos </returns>
+        [Authorize(Policy ="UserPolicy")]
         [HttpGet("ObtenerTodos")]
         public async Task<IActionResult> ObtenerTodosLosProductos()
         {
@@ -69,6 +71,7 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="productoDto"></param>
         /// <returns></returns>
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Crear")]
         public async Task<IActionResult> CrearProducto([FromBody] ProductoDto productoDto)
         {
@@ -98,6 +101,7 @@ namespace TechStoreApiRest.Controllers
         /// <param name="id">Id del producto que se desea actualizar</param>
         /// <param name="productoDto">producto que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("actualizar/{id}")]
         public async Task<IActionResult> ActualizarProducto(Guid id, [FromBody] ProductoDto productoDto)
         {
@@ -130,6 +134,7 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="id">Id del producto a eliminar</param>
         /// <returns>devuelve 204 no content si se elimino correctamente, de lo contrario devuelve 500</returns>
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("eliminar/{id}")]
         public async Task<IActionResult> EliminarProducto(Guid id)
         {

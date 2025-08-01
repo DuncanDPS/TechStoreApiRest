@@ -1,9 +1,12 @@
 using Datos;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// habilitar el registro de controladores
 builder.Services.AddControllers();
 
 // habilitar el registro de Swagger
@@ -18,6 +21,8 @@ builder.Services.AddDbContext<AppContextDb>(options =>
 builder.Services.AddScoped<Servicios.IServicios.IProductoService, Servicios.ProductoService>();
 // Registra el servicio de categorias
 builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, Servicios.CategoriaService>();
+// Registra el servicio de TokenGenerator
+builder.Services.AddScoped<Servicios.TokenGeneratorService, Servicios.TokenGeneratorService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -34,6 +39,29 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
 });
 
+
+// configuracion JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("ClientePolicy", policy => policy.RequireRole("Usuario"));
+
+});
+
 var app = builder.Build();
 
 // Habilita Swagger solo en desarrollo
@@ -46,7 +74,7 @@ if (app.Environment.IsDevelopment())
 // Redirige HTTP a HTTPS
 app.UseHttpsRedirection();
 
-// Habilita la autorización
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Mapea los controladores
