@@ -11,13 +11,13 @@ namespace TechStoreApiRest.Controllers
     {
         
 
-        //public AuthController() { }
+        ////public AuthController() { }
 
-        //[HttpPost("registrar-usuario")]
-        //public async Task<IActionResult> RegistrarUsuario([FromBody] UsuarioRegisterDto usuarioDto)
-        //{
-        //    // 1. Validar usuario y contrasenia
+        ////[HttpPost("registrar-usuario")]
+        ////public async Task<IActionResult> RegistrarUsuario([FromBody] UsuarioRegisterDto usuarioDto)
+        ////{
+        ////    // 1. Validar usuario y contrasenia
 
-        //}
+        ////}
     }
 }

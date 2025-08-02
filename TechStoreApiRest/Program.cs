@@ -22,7 +22,9 @@ builder.Services.AddScoped<Servicios.IServicios.IProductoService, Servicios.Prod
 // Registra el servicio de categorias
 builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, Servicios.CategoriaService>();
 // Registra el servicio de TokenGenerator
-builder.Services.AddScoped<Servicios.TokenGeneratorService, Servicios.TokenGeneratorService>();
+builder.Services.AddScoped<Servicios.IServicios.ITokenGeneratorService, Servicios.TokenGeneratorService>();
+// Registrar el servicio de Usuario
+builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, Servicios.UsuarioService>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
