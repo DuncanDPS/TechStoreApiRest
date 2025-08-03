@@ -2,7 +2,8 @@
 
 ## 🟢 Funcionalidad pendiente
 
-- [ ] Crear un DTO de respuesta para usuario (sin exponer la contraseña)
+- [ ] Crear un DTO de respuesta y peticion para todas las entidades
+- [ ] 
 - [ ] Implementar endpoint para obtener usuario por ID
 - [ ] Agregar validaciones adicionales en el registro de usuario
 - [ ] Mejorar manejo de errores y mensajes en los controladores
