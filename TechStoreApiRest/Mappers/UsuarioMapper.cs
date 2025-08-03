@@ -1,4 +1,6 @@
-﻿namespace TechStoreApiRest.Mappers
+﻿using TechStoreApiRest.DTOS;
+using Entidades;
+namespace TechStoreApiRest.Mappers
 {
     /// <summary>
     /// Proporciona funcionalidad para mapear datos relacionados con usuarios entre diferentes representaciones.
@@ -7,6 +9,21 @@
     public static class UsuarioMapper
     {
         // TODO: CREAR LOS METODOS PARA MAPEAR DE USUARIO A DTO  Y VICEVERSA
+        public static Usuario ToEntity(UsuarioRegisterDto usuarioRegister)
+        {
+            if (usuarioRegister == null)
+                throw new ArgumentNullException(nameof(usuarioRegister));
+
+            return new Usuario
+            {
+                Id = Guid.NewGuid(),
+                Nombre = usuarioRegister.Nombre,
+                Apellidos = usuarioRegister.Apellidos,
+                Email = usuarioRegister.Email,
+                Rol = string.IsNullOrWhiteSpace(usuarioRegister.Rol) ? "Cliente" : usuarioRegister.Rol,
+                ContraseniaHash = usuarioRegister.Contrasenia // Aquí deberías hashear la contraseña en un caso real
+            };
+        }
 
     }
 }
