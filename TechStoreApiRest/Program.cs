@@ -29,7 +29,8 @@ builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, Servicios.Usuar
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        // Elimina o comenta la siguiente línea:
+        // options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
         options.JsonSerializerOptions.WriteIndented = true;
     });
 

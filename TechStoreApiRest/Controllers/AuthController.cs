@@ -33,7 +33,8 @@ namespace TechStoreApiRest.Controllers
                 var usuario = UsuarioMapper.ToEntity(usuarioDto);
 
                 var usuarioCreado = await _usuarioService.RegistrarUsuario(usuario);
-                return StatusCode(StatusCodes.Status201Created, usuarioDto); // devuelve 201 Created con el nuevo usuario
+                var usuarioResp = UsuarioMapper.ToEntityToResponse(usuario);
+                return StatusCode(StatusCodes.Status201Created, usuarioResp); // devuelve 201 Created con el nuevo usuario
             }
             catch (Exception ex)
             {

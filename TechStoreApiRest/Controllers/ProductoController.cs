@@ -24,7 +24,7 @@ namespace TechStoreApiRest.Controllers
         /// Recupera todos los productos.
         /// </summary>
         /// <returns>Retorna todos los productos </returns>
-        [Authorize(Policy ="UserPolicy")]
+        //[Authorize(Policy ="UserPolicy")]
         [HttpGet("ObtenerTodos")]
         public async Task<IActionResult> ObtenerTodosLosProductos()
         {

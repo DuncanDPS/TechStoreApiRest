@@ -8,7 +8,7 @@ namespace TechStoreApiRest.Mappers
     /// <remarks>Esta clase se utiliza normalmente para convertir datos de usuario entre modelos de dominio, DTOs u otros formatos. Sirve como una utilidad para asegurar transformaciones consistentes de la información del usuario.</remarks>
     public static class UsuarioMapper
     {
-        // TODO: CREAR LOS METODOS PARA MAPEAR DE USUARIO A DTO  Y VICEVERSA
+       
         public static Usuario ToEntity(UsuarioRegisterDto usuarioRegister)
         {
             if (usuarioRegister == null)
@@ -22,6 +22,18 @@ namespace TechStoreApiRest.Mappers
                 Email = usuarioRegister.Email,
                 Rol = string.IsNullOrWhiteSpace(usuarioRegister.Rol) ? "Cliente" : usuarioRegister.Rol,
                 ContraseniaHash = usuarioRegister.Contrasenia // Aquí deberías hashear la contraseña en un caso real
+            };
+        }
+        // Pasa el usaurio de entidad a Response
+        public static UsuarioResponse ToEntityToResponse(Usuario usuario)
+        {
+            if (usuario == null) throw new ArgumentNullException(nameof(usuario));
+            return new UsuarioResponse
+            {
+                Nombre = usuario.Nombre,
+                Apellidos = usuario.Apellidos,
+                Email = usuario.Email,
+                Rol = usuario.Rol
             };
         }
 
