@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.IServicios;
 using Servicios.DTOS;
+using Servicios.DTOS.Mappers;
 
 namespace TechStoreApiRest.Controllers
 {
@@ -44,25 +45,19 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="id">Id del producto que se necesita devolver</param>
         /// <returns>devuelve el producto solicitado mediante su id unico</returns>
-        //[HttpGet("ObtenerPorId/{id}")]
-        //public async Task<IActionResult> ObtenerProductoPorId(Guid id)
-        //{
-        //    try
-        //    {
-        //        var producto = await _productoService.ObtenerProductoPorId(id);
-        //        if(producto == null)
-        //        {
-        //            return NotFound($"Producto con ID {id} no encontrado.");
-        //        }
-        //        // aplicamos el mapeo de Producto a ProductoDto
-        //        var productoDto = producto.ToDto();
-        //        return Ok(productoDto); // devuelve 200 OK con el producto mapeado
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar el producto: {ex.Message}");
-        //    }
-        //}
+        [HttpGet("ObtenerPorId/{id}")]
+        public async Task<IActionResult> ObtenerProductoPorId(Guid id)
+        {
+            try
+            {
+                ProductoResponseDto producto = await _productoService.ObtenerProductoPorId(id);
+                return Ok(producto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar el producto: {ex.Message}");
+            }
+        }
 
         /// <summary>
         /// Crea un nuevo producto.
@@ -71,7 +66,7 @@ namespace TechStoreApiRest.Controllers
         /// <returns></returns>
         //[Authorize(Policy = "AdminPolicy")]
         [HttpPost("Crear")]
-        public async Task<IActionResult> CrearProducto([FromBody] ProductoAddRequestDto productoDto)
+        public async Task<IActionResult> CrearProducto(ProductoAddRequestDto productoDto)
         {
             if (!ModelState.IsValid)
             {
@@ -98,32 +93,29 @@ namespace TechStoreApiRest.Controllers
         /// <param name="productoDto">producto que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
         //[Authorize(Policy = "AdminPolicy")]
-        //[HttpPut("actualizar/{id}")]
-        //public async Task<IActionResult> ActualizarProducto(Guid id, [FromBody] ProductoDto productoDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    try
-        //    {
-        //        // Mapeo de DTO a entidad
-        //        var producto = productoDto.ToEntity();
-        //        producto.Id = id; // Aseguramos que el Id del producto sea el correcto
-        //        var productoActualizado = await _productoService.ActualizarProducto(producto);
-        //        if (productoActualizado == null)
-        //        {
-        //            return NotFound($"Producto con ID {id} no encontrado.");
-        //        }
-        //        // Opcional: puedes devolver el DTO mapeado del producto actualizado
-        //        var productoActualizadoDto = productoActualizado.ToDto();
-        //        return Ok(productoActualizadoDto);
-        //    }
-        //    catch (ArgumentException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpPut("actualizar/{id}")]
+        public async Task<IActionResult> ActualizarProducto(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                // obtener un producto con ese id
+                ProductoResponseDto response = await _productoService.ObtenerProductoPorId(id);
+          
+                ProductoUpdateRequestDto producto =  ProductoMapper.ResponseDtoToUpdateRequest(response);
+                // se actualiza el producto
+                ProductoResponseDto productoActualizado = await _productoService.ActualizarProducto(producto);
+
+                return Ok(productoActualizado);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Elimina un producto por su ID.

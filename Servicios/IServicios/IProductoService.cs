@@ -26,7 +26,7 @@ namespace Servicios.IServicios
         /// </summary>
         /// <param name="id">Se refiere al Guid como Id, necesario para buscar el producto</param>
         /// <returns>Un producto segun el Id</returns>
-        Task<Producto> ObtenerProductoPorId(Guid id);
+        Task<ProductoResponseDto> ObtenerProductoPorId(Guid id);
 
         /// <summary>
         /// Crea un nuevo producto.
@@ -40,7 +40,7 @@ namespace Servicios.IServicios
         /// </summary>
         /// <param name="producto">Producto existente que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
-        Task<Producto> ActualizarProducto(Producto producto);
+        Task<ProductoResponseDto> ActualizarProducto(ProductoUpdateRequestDto producto);
 
         /// <summary>
         /// Elimina un producto por su ID.

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Servicios.DTOS
 {
-    public class ProductoUpdateRequest
+    public class ProductoUpdateRequestDto
     {
         public Guid Id { get; set; }
         [Required]

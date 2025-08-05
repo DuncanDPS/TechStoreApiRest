@@ -58,8 +58,8 @@ namespace Servicios
             return ProductoMapper.ToDtoResponse(ProductoEntidad);
         }
 
-        // TODO: Revisar este metodo, tengo suenio xd
-        public async Task<Producto> ActualizarProducto(ProductoUpdateRequest producto)
+        
+        public async Task<ProductoResponseDto> ActualizarProducto(ProductoUpdateRequestDto producto)
         {
             var productoExistente = await _context.Productos.FindAsync(producto.Id); // buscar el producto por su Id
 
@@ -82,13 +82,10 @@ namespace Servicios
             {
                 throw new ArgumentException("La categoria especificada no existe");
             }
-
             productoExistente.CategoriaId = categoria.Id;
-            
             await _context.SaveChangesAsync(); // guardamos los cambios en la base de datos
-            return productoExistente; // devolvemos el producto actualizado
 
-
+            return ProductoMapper.ToDtoResponse(productoExistente); ;  // devolvemos el producto actualizado
         }
 
         public async Task<bool> EliminarProducto(Guid id)

@@ -45,7 +45,7 @@ namespace Servicios.DTOS.Mappers
         }
 
         /// <summary>
-        /// Convierte un objeto <see cref="ProductoUpdateRequest"/> en una entidad <see cref="Producto"/>.
+        /// Convierte un objeto <see cref="ProductoUpdateRequestDto"/> en una entidad <see cref="Producto"/>.
         /// </summary>
         /// <param name="productoDto">
         /// El DTO con los datos necesarios para actualizar un producto.
@@ -53,7 +53,7 @@ namespace Servicios.DTOS.Mappers
         /// <returns>
         /// Una nueva instancia de <see cref="Producto"/> con los valores asignados desde el DTO de actualización.
         /// </returns>
-        public static Producto UpdateRequestToEntity(ProductoUpdateRequest productoDto)
+        public static Producto UpdateRequestToEntity(ProductoUpdateRequestDto productoDto)
         {
 
             return new Producto
@@ -65,6 +65,42 @@ namespace Servicios.DTOS.Mappers
                 //CategoriaId = productoDto.CategoriaNombre ?? string.Empty
             };
 
+        }
+
+        /// <summary>
+        /// Mapea un Producto en ProductoUpdateRequest
+        /// </summary>
+        /// <param name="producto">producto especificado para el mapeo</param>
+        /// <returns>devuelve un ProductoUpdateRequestDto</returns>
+        public static ProductoUpdateRequestDto EntityToUpdateReq(Producto producto)
+        {
+            return new ProductoUpdateRequestDto
+            {
+                Id = producto.Id,
+                CategoriaNombre = producto.Categoria?.Nombre ?? string.Empty,
+                Descripcion = producto.Descripcion,
+                Precio = producto.Precio,
+                Stock = producto.Stock,
+                Nombre = producto.Nombre
+            };
+        }
+
+        /// <summary>
+        /// Mapea un <see cref="ProductoResponseDto"/> a un <see cref="ProductoUpdateRequestDto"/>.
+        /// </summary>
+        /// <param name="productoDto">El DTO de respuesta del producto a mapear.</param>
+        /// <returns>Un nuevo <see cref="ProductoUpdateRequestDto"/> con los valores del DTO de respuesta.</returns>
+        public static ProductoUpdateRequestDto ResponseDtoToUpdateRequest(ProductoResponseDto productoDto)
+        {
+            return new ProductoUpdateRequestDto
+            {
+                Id = productoDto.Id,
+                Nombre = productoDto.Nombre,
+                Descripcion = productoDto.Descripcion,
+                Precio = productoDto.Precio,
+                Stock = productoDto.Stock,
+                CategoriaNombre = productoDto.CategoriaNombre
+            };
         }
 
 
