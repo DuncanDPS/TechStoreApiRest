@@ -11,7 +11,7 @@ namespace Servicios.DTOS.Mappers
         /// </summary>
         /// <param name="producto">objeto a convertir en su parte Dto </param>
         /// <returns>devuelve el producto convertido en su parte Dto</returns>
-        public static ProductoResponseDto ToDtoResponse(this Producto producto)
+        public static ProductoResponseDto EntityToDtoResponse(this Producto producto)
         {
             return new ProductoResponseDto
             {
@@ -53,7 +53,7 @@ namespace Servicios.DTOS.Mappers
         /// <returns>
         /// Una nueva instancia de <see cref="Producto"/> con los valores asignados desde el DTO de actualización.
         /// </returns>
-        public static Producto UpdateRequestToEntity(ProductoUpdateRequestDto productoDto)
+        public static Producto UpdateRequestToEntity(this ProductoUpdateRequestDto productoDto)
         {
 
             return new Producto
@@ -72,7 +72,7 @@ namespace Servicios.DTOS.Mappers
         /// </summary>
         /// <param name="producto">producto especificado para el mapeo</param>
         /// <returns>devuelve un ProductoUpdateRequestDto</returns>
-        public static ProductoUpdateRequestDto EntityToUpdateReq(Producto producto)
+        public static ProductoUpdateRequestDto EntityToUpdateReq(this Producto producto)
         {
             return new ProductoUpdateRequestDto
             {
@@ -90,7 +90,7 @@ namespace Servicios.DTOS.Mappers
         /// </summary>
         /// <param name="productoDto">El DTO de respuesta del producto a mapear.</param>
         /// <returns>Un nuevo <see cref="ProductoUpdateRequestDto"/> con los valores del DTO de respuesta.</returns>
-        public static ProductoUpdateRequestDto ResponseDtoToUpdateRequest(ProductoResponseDto productoDto)
+        public static ProductoUpdateRequestDto ResponseDtoToUpdateRequest(this ProductoResponseDto productoDto)
         {
             return new ProductoUpdateRequestDto
             {
@@ -103,6 +103,25 @@ namespace Servicios.DTOS.Mappers
             };
         }
 
+        /// <summary>
+        /// Dto response a entidad
+        /// </summary>
+        /// <param name="dto">Response Dto que sera convertido en entidad</param>
+        /// <returns>Una entidad Producto</returns>
+        public static Producto ResponseDtoToEntity(ProductoResponseDto dto)
+        {
+            return new Producto
+            {
+                Id = dto.Id,
+                Nombre = dto.Nombre ?? string.Empty,
+                Descripcion = dto.Descripcion ?? string.Empty,
+                Precio = dto.Precio,
+                Stock = dto.Stock,
+                CategoriaId = dto.CategoriaId
+            };
+        }
+
+       
 
     }
 }

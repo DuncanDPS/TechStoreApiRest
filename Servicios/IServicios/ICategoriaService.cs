@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades;
+using Servicios.DTOS;
 
 namespace Servicios.IServicios
 {
@@ -16,28 +17,28 @@ namespace Servicios.IServicios
         /// Obtiene todas las categorías
         /// </summary>
         /// <returns>Devuelve una lista de todas las categorias</returns>
-        Task<IEnumerable<Categoria>> ObtenerTodasLasCategorias();
+        Task<IEnumerable<CategoriaResponseDto>> ObtenerTodasLasCategorias();
         
         /// <summary>
         /// Obtiene una categoría por su ID.
         /// </summary>
         /// <param name="id">id es el parametro para obtener la categoria especificada</param>
         /// <returns>devuelve una categoria segun su id</returns>
-        Task<Categoria> ObtenerCategoriaPorId(Guid id);
+        Task<CategoriaResponseDto> ObtenerCategoriaPorId(Guid id);
 
         /// <summary>
         /// Crea una nueva categoría.
         /// </summary>
         /// <param name="categoria">objecto de Tipo Categoria que se creara y guardara en la DB</param>
         /// <returns>Devuelve el objeto categoria creado</returns>
-        Task<Categoria> CrearCategoria(Categoria categoria);
+        Task<CategoriaResponseDto> CrearCategoria(CategoriaAddRequestDto categoriaAddReq);
 
         /// <summary>
         /// Actualiza una categoría existente.
         /// </summary>
         /// <param name="categoria">categoria especificada para actualizar</param>
         /// <returns>devuelve la categoria actualizada</returns>
-        Task<Categoria> ActualizarCategoria(Categoria categoria);
+        Task<CategoriaResponseDto> ActualizarCategoria(CategoriaUpdateRequestDto categoriaUpdateRe);
 
         /// <summary>
         /// Elimina una categoría por su ID.

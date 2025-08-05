@@ -96,10 +96,7 @@ namespace TechStoreApiRest.Controllers
         [HttpPut("actualizar/{id}")]
         public async Task<IActionResult> ActualizarProducto(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+
             try
             {
                 // obtener un producto con ese id

@@ -4,6 +4,8 @@
  
 - [X] Implementar Refactorizacion DTO Producto
 - [X] Corregir los errores en el controlador de Productos 
+- [X] Crear CategoriaUpdateRequest y Actualizar ICategoriaServicio param en metodo Editar
+- [ ] Quitar Los productos del JSON para actualizar categorias, y dejar solo nombre y descripcion editables
 - [ ] Implementar endpoint para obtener usuario por ID
 - [ ] Implementar el login de usuarios
 - [ ] Implementar un servicio de loggin para llevar un registro de peticiones y acciones que se hacen.

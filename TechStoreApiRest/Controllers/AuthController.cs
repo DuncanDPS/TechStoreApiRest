@@ -31,7 +31,7 @@
 //            try
 //            {
 //                // mapeamos el usuariodto a entidad
-//                var usuario = UsuarioMapper.ToEntity(usuarioDto);
+//                var usuario = UsuarioMapper.CategoriaDtoRespToEntity(usuarioDto);
 
 //                var usuarioCreado = await _usuarioService.RegistrarUsuario(usuario);
 //                var usuarioResp = UsuarioMapper.ToEntityToResponse(usuario);

@@ -21,7 +21,7 @@ namespace Servicios
         {
             var listaProductos =await _context.Productos.Include(p => p.Categoria).ToListAsync();
 
-            var listaProductoResponse = listaProductos.Select(p => p.ToDtoResponse()).ToList();
+            var listaProductoResponse = listaProductos.Select(p => p.EntityToDtoResponse()).ToList();
 
             return listaProductoResponse;  
         }
@@ -55,7 +55,7 @@ namespace Servicios
             await _context.Productos.AddAsync(ProductoEntidad);
             await _context.SaveChangesAsync();
             await _context.Entry(ProductoEntidad).Reference(p => p.Categoria).LoadAsync();
-            return ProductoMapper.ToDtoResponse(ProductoEntidad);
+            return ProductoMapper.EntityToDtoResponse(ProductoEntidad);
         }
 
         
@@ -74,18 +74,9 @@ namespace Servicios
             productoExistente.Precio = producto.Precio;
             productoExistente.Stock = producto.Stock;
 
-            // validar que la categoria exista por el nombre y asignar el Id
-            var categoria = await _context.Categorias
-                .FirstOrDefaultAsync(c => c.Nombre.ToLower() == producto.CategoriaNombre.ToLower());
-
-            if (categoria == null)
-            {
-                throw new ArgumentException("La categoria especificada no existe");
-            }
-            productoExistente.CategoriaId = categoria.Id;
             await _context.SaveChangesAsync(); // guardamos los cambios en la base de datos
 
-            return ProductoMapper.ToDtoResponse(productoExistente); ;  // devolvemos el producto actualizado
+            return ProductoMapper.EntityToDtoResponse(productoExistente); ;  // devolvemos el producto actualizado
         }
 
         public async Task<bool> EliminarProducto(Guid id)
@@ -114,7 +105,7 @@ namespace Servicios
             {
                 throw new ArgumentException("Producto no encontrado.");
             }
-            return ProductoMapper.ToDtoResponse(producto); // devolvemos el producto encontrado
+            return ProductoMapper.EntityToDtoResponse(producto); // devolvemos el producto encontrado
         }
 
         // TODO: Crear un metodo de servicio para obtener el producto por su nombre como opcional
