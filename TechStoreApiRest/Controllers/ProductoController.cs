@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.IServicios;
-using TechStoreApiRest.DTOS;
-using TechStoreApiRest.Mappers;
+using Servicios.DTOS;
 
 namespace TechStoreApiRest.Controllers
 {
@@ -31,9 +30,8 @@ namespace TechStoreApiRest.Controllers
             try
             {
                 var productos = await _productoService.ObtenerTodosLosProductos();
-                // aplicamos el mapeo de Producto a ProductoDto
-                var productosDto = productos.Select(p => p.ToDto()).ToList();
-                return Ok(productosDto); // devuelve 200 OK con la lista de productos mapeados
+        
+                return Ok(productos); // devuelve 200 OK con la lista de productos mapeados
             }
             catch (Exception ex)
             {
@@ -46,34 +44,34 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="id">Id del producto que se necesita devolver</param>
         /// <returns>devuelve el producto solicitado mediante su id unico</returns>
-        [HttpGet("ObtenerPorId/{id}")]
-        public async Task<IActionResult> ObtenerProductoPorId(Guid id)
-        {
-            try
-            {
-                var producto = await _productoService.ObtenerProductoPorId(id);
-                if(producto == null)
-                {
-                    return NotFound($"Producto con ID {id} no encontrado.");
-                }
-                // aplicamos el mapeo de Producto a ProductoDto
-                var productoDto = producto.ToDto();
-                return Ok(productoDto); // devuelve 200 OK con el producto mapeado
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar el producto: {ex.Message}");
-            }
-        }
+        //[HttpGet("ObtenerPorId/{id}")]
+        //public async Task<IActionResult> ObtenerProductoPorId(Guid id)
+        //{
+        //    try
+        //    {
+        //        var producto = await _productoService.ObtenerProductoPorId(id);
+        //        if(producto == null)
+        //        {
+        //            return NotFound($"Producto con ID {id} no encontrado.");
+        //        }
+        //        // aplicamos el mapeo de Producto a ProductoDto
+        //        var productoDto = producto.ToDto();
+        //        return Ok(productoDto); // devuelve 200 OK con el producto mapeado
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar el producto: {ex.Message}");
+        //    }
+        //}
 
         /// <summary>
         /// Crea un nuevo producto.
         /// </summary>
         /// <param name="productoDto"></param>
         /// <returns></returns>
-        [Authorize(Policy = "AdminPolicy")]
+        //[Authorize(Policy = "AdminPolicy")]
         [HttpPost("Crear")]
-        public async Task<IActionResult> CrearProducto([FromBody] ProductoDto productoDto)
+        public async Task<IActionResult> CrearProducto([FromBody] ProductoAddRequestDto productoDto)
         {
             if (!ModelState.IsValid)
             {
@@ -81,13 +79,11 @@ namespace TechStoreApiRest.Controllers
             }
             try
             {
-                // Mapeo de DTO a entidad
-                var producto = productoDto.ToEntity();
-                var productoCreado = await _productoService.CrearProducto(producto);
 
+                var productoCreado = await _productoService.CrearProducto(productoDto);
                 // Opcional: puedes devolver el DTO mapeado del producto creado
-                var productoCreadoDto = productoCreado.ToDto();
-                return CreatedAtAction(nameof(CrearProducto), new { id = productoCreadoDto.Id }, productoCreadoDto);
+                
+                return CreatedAtAction(nameof(CrearProducto), new { id = productoCreado.Id }, productoCreado);
             }
             catch (ArgumentException ex)
             {
@@ -101,33 +97,33 @@ namespace TechStoreApiRest.Controllers
         /// <param name="id">Id del producto que se desea actualizar</param>
         /// <param name="productoDto">producto que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
-        [Authorize(Policy = "AdminPolicy")]
-        [HttpPut("actualizar/{id}")]
-        public async Task<IActionResult> ActualizarProducto(Guid id, [FromBody] ProductoDto productoDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            try
-            {
-                // Mapeo de DTO a entidad
-                var producto = productoDto.ToEntity();
-                producto.Id = id; // Aseguramos que el Id del producto sea el correcto
-                var productoActualizado = await _productoService.ActualizarProducto(producto);
-                if (productoActualizado == null)
-                {
-                    return NotFound($"Producto con ID {id} no encontrado.");
-                }
-                // Opcional: puedes devolver el DTO mapeado del producto actualizado
-                var productoActualizadoDto = productoActualizado.ToDto();
-                return Ok(productoActualizadoDto);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //[Authorize(Policy = "AdminPolicy")]
+        //[HttpPut("actualizar/{id}")]
+        //public async Task<IActionResult> ActualizarProducto(Guid id, [FromBody] ProductoDto productoDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    try
+        //    {
+        //        // Mapeo de DTO a entidad
+        //        var producto = productoDto.ToEntity();
+        //        producto.Id = id; // Aseguramos que el Id del producto sea el correcto
+        //        var productoActualizado = await _productoService.ActualizarProducto(producto);
+        //        if (productoActualizado == null)
+        //        {
+        //            return NotFound($"Producto con ID {id} no encontrado.");
+        //        }
+        //        // Opcional: puedes devolver el DTO mapeado del producto actualizado
+        //        var productoActualizadoDto = productoActualizado.ToDto();
+        //        return Ok(productoActualizadoDto);
+        //    }
+        //    catch (ArgumentException ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         /// <summary>
         /// Elimina un producto por su ID.

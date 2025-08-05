@@ -1,4 +1,4 @@
-﻿namespace TechStoreApiRest.DTOS
+﻿namespace Servicios.DTOS
 {
     public class UsuarioRegisterDto
     {

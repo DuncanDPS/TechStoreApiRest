@@ -1,6 +1,6 @@
-﻿using TechStoreApiRest.DTOS;
+﻿using Servicios.DTOS;
 using Entidades;
-namespace TechStoreApiRest.Mappers
+namespace Servicios.DTOS.Mappers
 {
     /// <summary>
     /// Proporciona funcionalidad para mapear datos relacionados con usuarios entre diferentes representaciones.
