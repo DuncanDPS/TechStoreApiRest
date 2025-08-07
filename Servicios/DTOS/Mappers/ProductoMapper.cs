@@ -76,7 +76,7 @@ namespace Servicios.DTOS.Mappers
         {
             return new ProductoUpdateRequestDto
             {
-                Id = producto.Id,
+                //Id = producto.Id,
                 CategoriaNombre = producto.Categoria?.Nombre ?? string.Empty,
                 Descripcion = producto.Descripcion,
                 Precio = producto.Precio,
@@ -94,7 +94,7 @@ namespace Servicios.DTOS.Mappers
         {
             return new ProductoUpdateRequestDto
             {
-                Id = productoDto.Id,
+                //Id = productoDto.Id,
                 Nombre = productoDto.Nombre,
                 Descripcion = productoDto.Descripcion,
                 Precio = productoDto.Precio,

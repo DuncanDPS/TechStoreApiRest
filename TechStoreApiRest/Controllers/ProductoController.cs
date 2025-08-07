@@ -94,17 +94,20 @@ namespace TechStoreApiRest.Controllers
         /// <returns>devuelve el producto actualizado</returns>
         //[Authorize(Policy = "AdminPolicy")]
         [HttpPut("actualizar/{id}")]
-        public async Task<IActionResult> ActualizarProducto(Guid id)
+        public async Task<IActionResult> ActualizarProducto(Guid id, ProductoUpdateRequestDto producto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             try
             {
                 // obtener un producto con ese id
                 ProductoResponseDto response = await _productoService.ObtenerProductoPorId(id);
           
-                ProductoUpdateRequestDto producto =  ProductoMapper.ResponseDtoToUpdateRequest(response);
                 // se actualiza el producto
-                ProductoResponseDto productoActualizado = await _productoService.ActualizarProducto(producto);
+                ProductoResponseDto productoActualizado = await _productoService.ActualizarProducto(id, producto);
 
                 return Ok(productoActualizado);
             }

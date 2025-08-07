@@ -38,7 +38,7 @@ namespace Servicios.IServicios
         /// </summary>
         /// <param name="categoria">categoria especificada para actualizar</param>
         /// <returns>devuelve la categoria actualizada</returns>
-        Task<CategoriaResponseDto> ActualizarCategoria(CategoriaUpdateRequestDto categoriaUpdateRe);
+        Task<CategoriaResponseDto> ActualizarCategoria(Guid id, CategoriaUpdateRequestDto categoriaUpdateRe);
 
         /// <summary>
         /// Elimina una categoría por su ID.

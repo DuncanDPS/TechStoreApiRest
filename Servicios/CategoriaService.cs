@@ -25,18 +25,18 @@ namespace Servicios
         }
 
         // TODO: Implementar metodo para actualizar Cat
-        public async Task<CategoriaResponseDto> ActualizarCategoria(CategoriaUpdateRequestDto categoriaUpdateReq)
+        public async Task<CategoriaResponseDto> ActualizarCategoria(Guid id, CategoriaUpdateRequestDto categoriaUpdateReq)
         {
             if (categoriaUpdateReq == null) throw new ArgumentNullException(nameof(categoriaUpdateReq), "La categoria no puede ser nula");
 
-            var categoriaExiste = await _context.Categorias.FindAsync(categoriaUpdateReq.Id);
+            var categoriaExiste = await _context.Categorias.FindAsync(id);
 
             if (categoriaExiste == null) throw new ArgumentNullException(nameof(categoriaExiste), "Categoria No Encontrada");
 
             // si no se cumple el if anterior, se procede a actualizar datos
             categoriaExiste.Nombre = categoriaUpdateReq.Nombre;
             categoriaExiste.Descripcion = categoriaUpdateReq.Descripcion;
-            categoriaExiste.Productos = categoriaUpdateReq.Productos;
+            //categoriaExiste.Productos = categoriaUpdateReq.Productos;
 
             // guardar cambios
             await _context.SaveChangesAsync();

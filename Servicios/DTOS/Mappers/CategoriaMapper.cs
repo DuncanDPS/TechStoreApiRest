@@ -51,12 +51,12 @@ namespace Servicios.DTOS.Mappers
         {
             return new CategoriaUpdateRequestDto
             {
-                Id = categoria.Id,
+                //Id = categoria.Id,
                 Nombre = categoria.Nombre,
                 Descripcion = categoria.Descripcion,
-                Productos = categoria.Productos?
-                    .Select(ProductoMapper.ResponseDtoToEntity)
-                    .ToList()
+                //Productos = categoria.Productos?
+                //    .Select(ProductoMapper.ResponseDtoToEntity)
+                //    .ToList()
             };
         }
 
@@ -64,10 +64,10 @@ namespace Servicios.DTOS.Mappers
         {
             return new CategoriaResponseDto
             {
-                Id = categoria.Id,
+                //Id = categoria.Id,
                 Descripcion = categoria?.Descripcion,
                 Nombre = categoria?.Nombre,
-                Productos = categoria.Productos?.Select(ProductoMapper.EntityToDtoResponse).ToList() ?? new List<ProductoResponseDto>()
+                //Productos = categoria.Productos?.Select(ProductoMapper.EntityToDtoResponse).ToList() ?? new List<ProductoResponseDto>()
             };
         }
 

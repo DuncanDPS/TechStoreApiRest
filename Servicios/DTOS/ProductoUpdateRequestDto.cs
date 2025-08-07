@@ -10,7 +10,7 @@ namespace Servicios.DTOS
 {
     public class ProductoUpdateRequestDto
     {
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
         [Required]
         [StringLength(150, ErrorMessage = "El nombre no puede exceder los 100 caracteres.")]
         public string Nombre { get; set; }

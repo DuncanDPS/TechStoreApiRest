@@ -59,9 +59,9 @@ namespace Servicios
         }
 
         
-        public async Task<ProductoResponseDto> ActualizarProducto(ProductoUpdateRequestDto producto)
+        public async Task<ProductoResponseDto> ActualizarProducto(Guid id, ProductoUpdateRequestDto producto)
         {
-            var productoExistente = await _context.Productos.FindAsync(producto.Id); // buscar el producto por su Id
+            var productoExistente = await _context.Productos.FindAsync(id); // buscar el producto por su Id
 
             // recibimos el producto y miramos si es nulo
             if (productoExistente == null)

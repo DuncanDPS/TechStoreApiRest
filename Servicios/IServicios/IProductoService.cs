@@ -40,7 +40,7 @@ namespace Servicios.IServicios
         /// </summary>
         /// <param name="producto">Producto existente que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
-        Task<ProductoResponseDto> ActualizarProducto(ProductoUpdateRequestDto producto);
+        Task<ProductoResponseDto> ActualizarProducto(Guid id, ProductoUpdateRequestDto producto);
 
         /// <summary>
         /// Elimina un producto por su ID.

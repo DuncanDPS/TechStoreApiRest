@@ -92,17 +92,17 @@ namespace TechStoreApiRest.Controllers
         [HttpPut("actualizarCategoria/{id}")]
         public async Task<IActionResult> ActualizarCategoria(Guid id, [FromBody] CategoriaUpdateRequestDto categoriaUpdateRequest)
         {
-            if (id != categoriaUpdateRequest.Id)
-            {
-                return BadRequest("El ID de la ruta no coincide con el ID del cuerpo.");
-            }
+            //if (id != )
+            //{
+            //    return BadRequest("El ID de la ruta no coincide con el ID del cuerpo.");
+            //}
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             try
             {
-                var categoriaActualizada = await _categoriaService.ActualizarCategoria(categoriaUpdateRequest);
+                var categoriaActualizada = await _categoriaService.ActualizarCategoria(id,categoriaUpdateRequest);
                 return Ok(categoriaActualizada);
             }
             catch (Exception ex)
