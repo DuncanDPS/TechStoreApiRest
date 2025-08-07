@@ -16,7 +16,6 @@ namespace Servicios.DTOS.Mappers
 
             return new Usuario
             {
-                Id = Guid.NewGuid(),
                 Nombre = usuarioRegister.Nombre,
                 Apellidos = usuarioRegister.Apellidos,
                 Email = usuarioRegister.Email,
@@ -25,7 +24,7 @@ namespace Servicios.DTOS.Mappers
             };
         }
         // Pasa el usaurio de entidad a Response
-        public static UsuarioResponse ToEntityToResponse(Usuario usuario)
+        public static UsuarioResponse EntityToResponse(Usuario usuario)
         {
             if (usuario == null) throw new ArgumentNullException(nameof(usuario));
             return new UsuarioResponse
@@ -36,6 +35,7 @@ namespace Servicios.DTOS.Mappers
                 Rol = usuario.Rol
             };
         }
+
 
     }
 }
