@@ -1,6 +1,9 @@
 ﻿using Entidades;
 using Datos;
 using Microsoft.EntityFrameworkCore;
+using Servicios.DTOS;
+using Servicios.DTOS.Mappers;
+
 namespace Servicios
 {
     public class ProductoService : IServicios.IProductoService
@@ -14,14 +17,17 @@ namespace Servicios
             _context = context;
         }
 
-        public async Task<IEnumerable<Producto>> ObtenerTodosLosProductos()
+        public async Task<IEnumerable<ProductoResponseDto>> ObtenerTodosLosProductos()
         {
-            // obtenemos todos los productos de la base de datos
-            return await _context.Productos.Include(p => p.Categoria).ToListAsync();
+            var listaProductos =await _context.Productos.Include(p => p.Categoria).ToListAsync();
+
+            var listaProductoResponse = listaProductos.Select(p => p.EntityToDtoResponse()).ToList();
+
+            return listaProductoResponse;  
         }
 
 
-        public async Task<Producto> CrearProducto(Producto producto)
+        public async Task<ProductoResponseDto> CrearProducto(ProductoAddRequestDto producto)
         {
             // recibimos el producto y miramos si es nulo
             if (producto == null)
@@ -34,23 +40,28 @@ namespace Servicios
                 throw new ArgumentException("Los datos del producto son inválidos.");
             }
 
-            // validar que la categoria exista
-            var categoriaExistente = await _context.Categorias.AnyAsync(c => c.Id == producto.CategoriaId);
-            if (!categoriaExistente)
+            // validar que la categoria exista por el nombre y asignar el Id
+            var categoria = await _context.Categorias
+                .FirstOrDefaultAsync(c => c.Nombre.ToLower() == producto.CategoriaNombre.ToLower());
+
+            if (categoria == null)
             {
-                throw new ArgumentException("La categoria Especificada no existe");
+                throw new ArgumentException("La categoria especificada no existe");
             }
 
             // guardamos el producto en la db
-            await _context.Productos.AddAsync(producto);
+            var ProductoEntidad = ProductoMapper.AddRequestToEntity(producto);
+            ProductoEntidad.CategoriaId = categoria.Id; // le asignamos el id de categoria encontrado anteriormente
+            await _context.Productos.AddAsync(ProductoEntidad);
             await _context.SaveChangesAsync();
-            return producto;
-
+            await _context.Entry(ProductoEntidad).Reference(p => p.Categoria).LoadAsync();
+            return ProductoMapper.EntityToDtoResponse(ProductoEntidad);
         }
 
-        public async Task<Producto> ActualizarProducto(Producto producto)
+        
+        public async Task<ProductoResponseDto> ActualizarProducto(Guid id, ProductoUpdateRequestDto producto)
         {
-            var productoExistente = await _context.Productos.FindAsync(producto.Id); // buscar el producto por su Id
+            var productoExistente = await _context.Productos.FindAsync(id); // buscar el producto por su Id
 
             // recibimos el producto y miramos si es nulo
             if (productoExistente == null)
@@ -62,12 +73,10 @@ namespace Servicios
             productoExistente.Descripcion = producto.Descripcion;
             productoExistente.Precio = producto.Precio;
             productoExistente.Stock = producto.Stock;
-            productoExistente.CategoriaId = producto.CategoriaId;
-            
+
             await _context.SaveChangesAsync(); // guardamos los cambios en la base de datos
-            return productoExistente; // devolvemos el producto actualizado
 
-
+            return ProductoMapper.EntityToDtoResponse(productoExistente); ;  // devolvemos el producto actualizado
         }
 
         public async Task<bool> EliminarProducto(Guid id)
@@ -84,7 +93,7 @@ namespace Servicios
             return await _context.SaveChangesAsync() > 0; // devolvemos true si se elimino correctamente, de lo contrario false
         }
 
-        public async Task<Producto> ObtenerProductoPorId(Guid id)
+        public async Task<ProductoResponseDto> ObtenerProductoPorId(Guid id)
         {
             // obtener el producto por su id
             var producto = await  _context.Productos
@@ -96,9 +105,10 @@ namespace Servicios
             {
                 throw new ArgumentException("Producto no encontrado.");
             }
-            return producto; // devolvemos el producto encontrado
-
+            return ProductoMapper.EntityToDtoResponse(producto); // devolvemos el producto encontrado
         }
+
+        // TODO: Crear un metodo de servicio para obtener el producto por su nombre como opcional
 
 
     }

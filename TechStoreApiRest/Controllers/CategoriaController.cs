@@ -1,8 +1,9 @@
 ﻿using Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TechStoreApiRest.DTOS;
-using TechStoreApiRest.Mappers;
+using Servicios.DTOS;
+using Servicios.DTOS.Mappers;
+
 
 
 
@@ -22,10 +23,10 @@ namespace TechStoreApiRest.Controllers
         /// <summary>
         /// Crea una nueva categoria.
         /// </summary>
-        /// <param name="categoria">Categoria que se creara</param>
+        /// <param name="categoriaDto">Categoria que se creara</param>
         /// <returns>devuelve la categoria creada</returns>
         [HttpPost("CrearCategoria")]
-        public async Task<IActionResult> CrearCategoria(CategoriaDto categoriaDto)
+        public async Task<IActionResult> CrearCategoria(CategoriaAddRequestDto categoriaDto)
         {
             // validamos el modelo recibido
             if (!ModelState.IsValid)
@@ -34,13 +35,8 @@ namespace TechStoreApiRest.Controllers
             }
             try
             {
-               // mapeamos el dto a la entidad Categoria
-                var categoria = categoriaDto.ToEntity();
-                // llamamos al servicio para crear la categoria
-                var categoriaCreada = await _categoriaService.CrearCategoria(categoria);
-                // mapeamos la entidad creada a CategoriaDto
-                var categoriaCreadaDto = categoriaCreada.ToDto();
-                return CreatedAtAction(nameof(ObtenerTodasLasCategorias), new { id = categoriaCreadaDto.Id }, categoriaCreadaDto); // devuelve 201 Created con la nueva categoria
+                var CategoriaCreada = await _categoriaService.CrearCategoria(categoriaDto);
+                return Ok(CategoriaCreada);
             }
             catch (ArgumentException ex)
             {
@@ -58,9 +54,7 @@ namespace TechStoreApiRest.Controllers
             // devueve todas las categorias usando dto
             try
             {
-                var categorias = await _categoriaService.ObtenerTodasLasCategorias();
-                var categoriasDto = categorias.Select(c => c.ToDto()).ToList(); // mapeamos las categorias a CategoriaDto
-                return Ok(categoriasDto); // devuelve 200 OK con la lista de categorias mapeadas
+                return Ok(await _categoriaService.ObtenerTodasLasCategorias());
             }
             catch (Exception ex)
             {
@@ -83,8 +77,7 @@ namespace TechStoreApiRest.Controllers
                 {
                     return NotFound($"Categoria con ID {id} no encontrada.");
                 }
-                var categoriaDto = categoria.ToDto(); // mapeamos la categoria a CategoriaDto
-                return Ok(categoriaDto); // devuelve 200 OK con la categoria mapeada
+                return Ok(categoria); // devuelve 200 OK 
             }
             catch (KeyNotFoundException ex)
             {
@@ -95,6 +88,29 @@ namespace TechStoreApiRest.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al recuperar la categoria: {ex.Message}");
             }
         }
+
+        [HttpPut("actualizarCategoria/{id}")]
+        public async Task<IActionResult> ActualizarCategoria(Guid id, [FromBody] CategoriaUpdateRequestDto categoriaUpdateRequest)
+        {
+            //if (id != )
+            //{
+            //    return BadRequest("El ID de la ruta no coincide con el ID del cuerpo.");
+            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var categoriaActualizada = await _categoriaService.ActualizarCategoria(id,categoriaUpdateRequest);
+                return Ok(categoriaActualizada);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         /// <summary>
         /// Elimina una categoria segun el id Especificado
@@ -113,7 +129,7 @@ namespace TechStoreApiRest.Controllers
                 }
                 return NoContent(); // se elimino la categoria
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al eliminar la categoria: {ex.Message}");
             }

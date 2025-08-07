@@ -8,7 +8,8 @@ using Servicios.IServicios;
 using Datos;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-
+using Servicios.DTOS;
+using Servicios.DTOS.Mappers;
 
 namespace Servicios
 {
@@ -24,12 +25,25 @@ namespace Servicios
         }
 
         // TODO: Implementar metodo para actualizar Cat
-        public async Task<Categoria> ActualizarCategoria(Categoria categoria)
+        public async Task<CategoriaResponseDto> ActualizarCategoria(Guid id, CategoriaUpdateRequestDto categoriaUpdateReq)
         {
-            throw new NotImplementedException();
+            if (categoriaUpdateReq == null) throw new ArgumentNullException(nameof(categoriaUpdateReq), "La categoria no puede ser nula");
+
+            var categoriaExiste = await _context.Categorias.FindAsync(id);
+
+            if (categoriaExiste == null) throw new ArgumentNullException(nameof(categoriaExiste), "Categoria No Encontrada");
+
+            // si no se cumple el if anterior, se procede a actualizar datos
+            categoriaExiste.Nombre = categoriaUpdateReq.Nombre;
+            categoriaExiste.Descripcion = categoriaUpdateReq.Descripcion;
+            //categoriaExiste.Productos = categoriaUpdateReq.Productos;
+
+            // guardar cambios
+            await _context.SaveChangesAsync();
+            return CategoriaMapper.CategoriaEntityToResponseDto(categoriaExiste);
         }
 
-        public async Task<Categoria> CrearCategoria(Categoria categoria)
+        public async Task<CategoriaResponseDto> CrearCategoria(CategoriaAddRequestDto categoria)
         {
             // recibimos la categoria y miramos si es nula
             if (categoria == null)
@@ -41,21 +55,40 @@ namespace Servicios
             {
                 throw new ArgumentException("El nombre de la categoria no puede estar vacío.");
             }
-            // validamos los data annotations
-            var validationContext = new ValidationContext(categoria);
-            var validationResults = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(categoria, validationContext, validationResults, true))
+
+            Categoria categoriaEntity = CategoriaMapper.CategoriaAddReqToEntity(categoria);
+            await _context.Categorias.AddAsync(categoriaEntity);
+            await _context.SaveChangesAsync();
+            return CategoriaMapper.CategoriaEntityToResponseDto(categoriaEntity);
+        }
+
+
+
+        public async Task<CategoriaResponseDto> ObtenerCategoriaPorId(Guid id)
+        {
+            // buscamos la categoria por id
+            var categoria = await _context.Categorias.FindAsync(id);
+            // si no existe, devolvemos una excepción
+            if (categoria == null)
             {
-                throw new ValidationException("Los datos de la categoria son inválidos: " + string.Join(", ", validationResults.Select(vr => vr.ErrorMessage)));
+                throw new KeyNotFoundException($"Categoria con ID {id} no encontrada.");
             }
 
-            if (categoria.Id == Guid.Empty)
-                categoria.Id = Guid.NewGuid();
+            // si existe, la devolvemos
+            return CategoriaMapper.CategoriaEntityToResponseDto(categoria);
+        }
 
-            // guardamos la categoria en la db
-            await _context.Categorias.AddAsync(categoria);
-            await _context.SaveChangesAsync();
-            return categoria;
+        public async Task<IEnumerable<CategoriaResponseDto>> ObtenerTodasLasCategorias()
+        {
+            // obtenemos todas las categorias de la base de datos
+            var categorias = await _context.Categorias.Include(c => c.Productos).ToListAsync();
+            // si no hay categorias, devolvemos una lista vacía
+            if (categorias == null || !categorias.Any())
+            {
+                throw new KeyNotFoundException("No existen Categorias");
+            }
+            var categoriaResponse = categorias.Select(c => c.CategoriaEntityToResponseDto()).ToList();
+            return categoriaResponse;
         }
 
         public async Task<bool> EliminarCategoria(Guid id)
@@ -72,30 +105,6 @@ namespace Servicios
             return await _context.SaveChangesAsync() > 0; // devolvemos true si se elimino correctamente, de lo contrario false
         }
 
-        public async Task<Categoria> ObtenerCategoriaPorId(Guid id)
-        {
-            // buscamos la categoria por id
-            var categoria = await _context.Categorias.FindAsync(id);
-            // si no existe, devolvemos una excepción
-            if (categoria == null)
-            {
-                throw new KeyNotFoundException($"Categoria con ID {id} no encontrada.");
-            }
-            // si existe, la devolvemos
-            return categoria;
-        }
 
-        public async Task<IEnumerable<Categoria>> ObtenerTodasLasCategorias()
-        {
-            // obtenemos todas las categorias de la base de datos
-            var categorias = await _context.Categorias.ToListAsync();
-            // si no hay categorias, devolvemos una lista vacía
-            if (categorias == null || !categorias.Any())
-            {
-                return new List<Categoria>();
-            }
-            // si hay categorias, las devolvemos
-            return categorias;
-        }
     }
 }

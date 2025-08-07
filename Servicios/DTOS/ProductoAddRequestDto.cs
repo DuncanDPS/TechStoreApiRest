@@ -1,13 +1,12 @@
-﻿namespace TechStoreApiRest.DTOS
+﻿namespace Servicios.DTOS
 {
-    public class ProductoDto
+    public class ProductoAddRequestDto
     {
-        public Guid Id { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public decimal Precio { get; set; }
         public int Stock { get; set; }
-        public Guid CategoriaId { get; set; }
+        //public Guid? CategoriaId { get; set; }
         public string CategoriaNombre { get; set; }
     }
 }

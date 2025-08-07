@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Servicios.DTOS; 
+
 namespace Servicios.IServicios
 {
     /// <summary>
@@ -17,28 +19,28 @@ namespace Servicios.IServicios
         /// Recupera todos los productos.
         /// </summary>
         /// <returns>Todos los productos</returns>
-        Task<IEnumerable<Producto>> ObtenerTodosLosProductos();
+        Task<IEnumerable<ProductoResponseDto>> ObtenerTodosLosProductos();
 
         /// <summary>
         /// Recupera un producto por su ID.
         /// </summary>
         /// <param name="id">Se refiere al Guid como Id, necesario para buscar el producto</param>
         /// <returns>Un producto segun el Id</returns>
-        Task<Producto> ObtenerProductoPorId(Guid id);
+        Task<ProductoResponseDto> ObtenerProductoPorId(Guid id);
 
         /// <summary>
         /// Crea un nuevo producto.
         /// </summary>
         /// <param name="producto">Se refiere al producto que va a ser anadido a la base de datos </param>
         /// <returns>devuelve el producto creado</returns>
-        Task<Producto> CrearProducto(Producto producto);
+        Task<ProductoResponseDto> CrearProducto(ProductoAddRequestDto producto);
 
         /// <summary>
         /// Actualiza un producto existente.
         /// </summary>
         /// <param name="producto">Producto existente que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
-        Task<Producto> ActualizarProducto(Producto producto);
+        Task<ProductoResponseDto> ActualizarProducto(Guid id, ProductoUpdateRequestDto producto);
 
         /// <summary>
         /// Elimina un producto por su ID.
