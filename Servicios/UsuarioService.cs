@@ -22,7 +22,7 @@ namespace Servicios
             _tokenGeneratorService = tokenGeneratorService;
         }
 
-        public async Task<UsuarioResponse> IniciarSesion(UsuarioLoginDto usuario)
+        public async Task<UsuarioLoginResponseDto> IniciarSesion(UsuarioLoginDto usuario)
         {
             // validacion de datos
             if(usuario == null) throw new ArgumentNullException(nameof(usuario), "Usuario Nulo o invalido");
@@ -32,7 +32,12 @@ namespace Servicios
             // verificar las contrasenias
             if (BCrypt.Net.BCrypt.Verify(usuario.Contrasenia, usuarioExistente!.ContraseniaHash))
             {
-                return UsuarioMapper.EntityToResponse(usuarioExistente);
+                // genera el token jwt
+                string Token = _tokenGeneratorService.GenerarToken(usuarioExistente);
+                var usuarioLoginResp = UsuarioMapper.EntityToLoginResponseDto(usuarioExistente);
+                // le pasamos el jwt token
+                usuarioLoginResp.Token = Token;
+                return usuarioLoginResp; // devolvemos el usuario con el token
             }
             else
             {
