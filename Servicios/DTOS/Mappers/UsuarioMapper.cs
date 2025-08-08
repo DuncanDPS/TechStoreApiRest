@@ -36,6 +36,16 @@ namespace Servicios.DTOS.Mappers
             };
         }
 
+        public static UsuarioLoginResponseDto EntityToLoginResponseDto(Usuario usuario)
+        {
+            if (usuario == null) throw new ArgumentNullException(nameof(usuario));
+            return new UsuarioLoginResponseDto 
+            { 
+                Nombre = usuario.Nombre,
+                Apellidos = usuario.Apellidos,
+                Email = usuario.Email
+            };
+        }
 
     }
 }

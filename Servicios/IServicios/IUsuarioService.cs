@@ -22,6 +22,6 @@ namespace Servicios.IServicios
         /// </summary>
         /// <param name="usuario">usuario que necesita iniciar sesion</param>
         /// <returns>devuelve el jwt token</returns>
-        Task<UsuarioResponse> IniciarSesion(UsuarioLoginDto usuario);
+        Task<UsuarioLoginResponseDto> IniciarSesion(UsuarioLoginDto usuario);
     }
 }
