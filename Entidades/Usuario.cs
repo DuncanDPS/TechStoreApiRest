@@ -20,7 +20,7 @@ namespace Entidades
         [Required]
         [EmailAddress(ErrorMessage = "Debe colocar una direccion de email valida")]
         public string Email { get; set; } = string.Empty;
-        public string Rol { get; set; } = "Usuario"; // rol de cliente por defecto
+        public string Rol { get; set; } = "Cliente"; // rol de cliente por defecto
         [Required]
         [StringLength(255,ErrorMessage = ("La Contrasenia debe ser menor de 255 caracteres"))]
         public string ContraseniaHash { get; set; } = string.Empty;

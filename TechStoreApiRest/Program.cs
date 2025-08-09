@@ -1,4 +1,5 @@
 using Datos;
+using Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -61,11 +62,38 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("ClientePolicy", policy => policy.RequireRole("Usuario"));
+    options.AddPolicy("ClientePolicy", policy => policy.RequireRole("Cliente"));
 
 });
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.Lifetime.ApplicationStarted.Register(async () =>
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppContextDb>();
+
+    if (!await db.Usuarios.AnyAsync(u => u.Email == builder.Configuration["AdminCredentials:UserAdmin"]))
+    {
+        var admin = new Usuario
+        {
+            Nombre = "Admin",
+            Apellidos = "Admin",
+            Rol = "Admin",
+            Email =  builder.Configuration["AdminCredentials:UserAdmin"] ?? throw new Exception("Las credenciales del admin no estan definidas correctamente"),
+            ContraseniaHash =builder.Configuration["AdminCredentials:AdminPass"] ?? throw new Exception("Las credenciales del admin no estan definidas correctamente")
+        };
+        admin.ContraseniaHash = BCrypt.Net.BCrypt.HashPassword(admin.ContraseniaHash);
+
+        db.Usuarios.Add(admin);
+        db.SaveChanges();
+        Console.WriteLine("Admin Creado");
+    }
+});
+
 
 // Habilita Swagger solo en desarrollo
 if (app.Environment.IsDevelopment())
@@ -74,11 +102,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 // Redirige HTTP a HTTPS
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
 
 // Mapea los controladores
 app.MapControllers();

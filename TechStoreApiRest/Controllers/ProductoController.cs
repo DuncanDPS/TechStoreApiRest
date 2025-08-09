@@ -64,7 +64,7 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="productoDto"></param>
         /// <returns></returns>
-        //[Authorize(Policy = "AdminPolicy")]
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Crear")]
         public async Task<IActionResult> CrearProducto(ProductoAddRequestDto productoDto)
         {
@@ -92,7 +92,7 @@ namespace TechStoreApiRest.Controllers
         /// <param name="id">Id del producto que se desea actualizar</param>
         /// <param name="productoDto">producto que se desea actualizar</param>
         /// <returns>devuelve el producto actualizado</returns>
-        //[Authorize(Policy = "AdminPolicy")]
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("actualizar/{id}")]
         public async Task<IActionResult> ActualizarProducto(Guid id, ProductoUpdateRequestDto producto)
         {
