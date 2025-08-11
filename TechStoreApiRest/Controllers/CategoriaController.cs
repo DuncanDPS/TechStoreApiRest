@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.DTOS;
@@ -25,6 +26,7 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="categoriaDto">Categoria que se creara</param>
         /// <returns>devuelve la categoria creada</returns>
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("CrearCategoria")]
         public async Task<IActionResult> CrearCategoria(CategoriaAddRequestDto categoriaDto)
         {
@@ -90,6 +92,7 @@ namespace TechStoreApiRest.Controllers
         }
 
         [HttpPut("actualizarCategoria/{id}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> ActualizarCategoria(Guid id, [FromBody] CategoriaUpdateRequestDto categoriaUpdateRequest)
         {
             //if (id != )
@@ -118,6 +121,7 @@ namespace TechStoreApiRest.Controllers
         /// <param name="id">id especifico de una categoria</param>
         /// <returns>devuelve true si la categoria fue eliminada</returns>
         [HttpDelete("EliminarCategoria/{id}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> EliminarCategoria(Guid id)
         {
             try
