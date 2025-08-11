@@ -2,11 +2,25 @@ using Datos;
 using Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+// limpiar los proveedores de registros
+builder.Logging.ClearProviders();
+// aniadimos los registros de consola y debug utiles para la fase de desarrollo
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// filtros
+builder.Logging.AddFilter("Microsoft.Hosting.Lifetime", Microsoft.Extensions.Logging.LogLevel.Information);
+builder.Logging.AddFilter("Microsoft", Microsoft.Extensions.Logging.LogLevel.Warning);
+builder.Logging.AddFilter("System", Microsoft.Extensions.Logging.LogLevel.Error);
+
 
 builder.Services.AddControllers();
 
@@ -30,8 +44,6 @@ builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, Servicios.Usuar
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Elimina o comenta la siguiente línea:
-        // options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
@@ -71,6 +83,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// creacion del ADMIN por defecto
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
     using var scope = app.Services.CreateScope();
