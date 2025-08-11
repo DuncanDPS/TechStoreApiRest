@@ -56,6 +56,10 @@ namespace Servicios
             {
                 throw new InvalidOperationException($"El email ya existe: {usuario.Email}, porfavor registre uno diferente");
             }
+            if(usuario.Rol == "string") // swagger define rol como string por lo que me sobreescribe Cliente que esta como rol por defecto
+            {
+                usuario.Rol = "Cliente";
+            }
 
             usuario.Contrasenia = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasenia);
             var usuarioEntidad = UsuarioMapper.ToEntity(usuario);
