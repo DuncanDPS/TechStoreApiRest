@@ -12,7 +12,7 @@ namespace Servicios.IServicios
     /// </summary>
     public interface IReviewService
     {
-       
+       // TODO: Terminar de crear la interfaz para continuar con los DTOs y implementacion de los servicios de esta interfaz
 
 
     }
