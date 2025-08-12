@@ -28,6 +28,7 @@ namespace Servicios
             if(usuario == null) throw new ArgumentNullException(nameof(usuario), "Usuario Nulo o invalido");
             // buscar el email para comprobar que exista y comparar la contrasenia
             var usuarioExistente = await _contextDb.Usuarios.FirstOrDefaultAsync(u => u.Email == usuario.Email);
+            if (usuarioExistente == null) throw new ArgumentNullException("El usuario no existe");
             if (usuarioExistente.Email != usuario.Email) throw new ArgumentException("El email del usuario no coincide");
             // verificar las contrasenias
             if (BCrypt.Net.BCrypt.Verify(usuario.Contrasenia, usuarioExistente!.ContraseniaHash))
