@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.IServicios;
 using Servicios.DTOS;
-
+using Serilog;
 
 namespace TechStoreApiRest.Controllers
 {
@@ -13,31 +13,32 @@ namespace TechStoreApiRest.Controllers
     {
 
         private readonly IUsuarioService _usuarioService;
-        //private readonly ITokenGeneratorService _tokenGeneratorService;
 
         public AuthController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            //_tokenGeneratorService = tokenGeneratorService;
         }
 
         [HttpPost("registrar-usuario")]
         public async Task<IActionResult> RegistrarUsuario(UsuarioRegisterDto usuarioDto)
         {
+            Log.Information("Intentando Registrar un Usuario con email: {Email}", usuarioDto.Email);
             // 1. Validar usuario y contrasenia
             if (!ModelState.IsValid)
             {
+                Log.Warning("Modelo Invalido al registrar usuario: {@ModelState}", ModelState);
                 return BadRequest(ModelState);
             }
             try
             {
                 
                 var usuarioCreado = await _usuarioService.RegistrarUsuario(usuarioDto);
-                
+                Log.Information("Usuario Registrado exitosamente: {Email}", usuarioDto.Email);
                 return StatusCode(StatusCodes.Status201Created, usuarioDto); // devuelve 201 Created con el nuevo usuario
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Error al registrar usuario: {Email}", usuarioDto.Email);
                 return BadRequest(new { error = ex.Message });
             }
         }
