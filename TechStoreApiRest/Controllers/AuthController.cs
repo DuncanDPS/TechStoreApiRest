@@ -46,17 +46,21 @@ namespace TechStoreApiRest.Controllers
         [HttpPost("iniciar-sesion")]
         public async Task<IActionResult> IniciarSesion(UsuarioLoginDto usuario)
         {
+            Log.Information("Intentando Iniciar sesion un Usuario con email: {Email}", usuario.Email);
             if (!ModelState.IsValid)
             {
+                Log.Warning("Modelo Invalido al registrar usuario: {@ModelState}", ModelState);
                 return BadRequest(ModelState);
             }
             try
             {
                 var usuarioLog = await _usuarioService.IniciarSesion(usuario);
+                Log.Information("El usuario con email: {Email}, Inicio sesion correctamente", usuario.Email);
                 return StatusCode(StatusCodes.Status201Created, usuarioLog);
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Error al iniciar sesion usuario con email: {Email}", usuario.Email);
                 return BadRequest(new {error = ex.Message});
             }
         }

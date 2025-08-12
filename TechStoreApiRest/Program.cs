@@ -11,17 +11,14 @@ using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
-// configuracion inicial de serilog
-//Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
-Log.Logger = new LoggerConfiguration().MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning).MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning).MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning).WriteTo.Console().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+// configuracion de serilog
+Log.Logger = new LoggerConfiguration().MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning).MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning).MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning).WriteTo.Console().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day).Filter.ByExcluding(Serilog.Filters.Matching.FromSource("Microsoft.EntityFrameworkCore.Database.Command")).CreateLogger();
 
 try
 {
     Log.Information("Starting Web App");
     builder.Services.AddSerilog(); //establece Serilog como el loggin provider
-
-    
 
 
     builder.Services.AddControllers();
