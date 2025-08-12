@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
 using System.Security.Cryptography;
 using System.Text;
-using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
 // configuracion inicial de serilog
-Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+//Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+
+Log.Logger = new LoggerConfiguration().MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning).MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning).MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning).WriteTo.Console().WriteTo.File("log/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
 try
 {
