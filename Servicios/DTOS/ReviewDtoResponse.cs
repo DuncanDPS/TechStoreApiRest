@@ -26,9 +26,6 @@ namespace Servicios.DTOS
         public int Calificacion { get; set; } // 1 a 5
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
         public string NombreDeUsuario { get; set; } = string.Empty;
-
-        // Navegación
-        public Usuario Usuario { get; set; }
-        public Producto Producto { get; set; }
+        public string NombreDeProducto { get; set; } = string.Empty;
     }
 }
