@@ -33,6 +33,13 @@ namespace TechStoreApiRest.Controllers
             Log.Information("Review Creada con exito");
             return Ok(response);
         }
+
+        [HttpGet("todas-las-reviews")]
+        public async Task<IActionResult> ObtenerTodasLasReviews()
+        {
+            Log.Information("Intentanto obtener todas las reviews");
+            return Ok(await _reviewService.ObtenerTodasLasReviews());
+        }
         
 
 

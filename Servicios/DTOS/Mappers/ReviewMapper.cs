@@ -11,12 +11,12 @@ using Datos;
 
 namespace Servicios.DTOS.Mappers
 {
-    public class ReviewMapper
+    public static class ReviewMapper
     {
   
 
         // ReviewDtoAddRequest TO Entity
-        public static Review DtoAddRequestToEntity(ReviewDtoAddRequest review)
+        public static Review DtoAddRequestToEntity(this ReviewDtoAddRequest review)
         {
             return new Review
             {
@@ -29,7 +29,7 @@ namespace Servicios.DTOS.Mappers
         }
 
         // Entity to ReviewDtoResponse
-        public static ReviewDtoResponse EntityToDtoResponse(Review review)
+        public static ReviewDtoResponse EntityToDtoResponse(this Review review)
         {
             return new ReviewDtoResponse
             {

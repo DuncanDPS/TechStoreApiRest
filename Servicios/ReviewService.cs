@@ -10,6 +10,7 @@ using Servicios.DTOS;
 using Servicios.DTOS.Mappers;
 using System.ComponentModel.DataAnnotations;
 using Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace Servicios
 {
@@ -67,7 +68,16 @@ namespace Servicios
 
         public async Task<IEnumerable<ReviewDtoResponse>> ObtenerTodasLasReviews()
         {
-            throw new NotImplementedException();
+            var reviews = await _contextDb.Reviews.Select(p => p.EntityToDtoResponse() ).ToListAsync();
+
+            if(reviews == null)
+            {
+                return Enumerable.Empty<ReviewDtoResponse>();
+            }
+            else
+            {
+                return reviews;
+            }
         }
 
 
