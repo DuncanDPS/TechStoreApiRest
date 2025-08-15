@@ -28,11 +28,10 @@ namespace Servicios.IServicios
         /// <summary>
         /// Retrieves all reviews from the system.
         /// </summary>
-        /// <remarks>This method performs an asynchronous operation to fetch all reviews. The returned 
-        /// <see cref="ReviewDtoResponse"/> includes the collection of reviews and any associated metadata.</remarks>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation, containing a  <see cref="ReviewDtoResponse"/>
-        /// object with the details of all reviews.</returns>
-        Task<ReviewDtoResponse> ObtenerTodasLasReviews();
+        /// <returns>A task that represents the asynchronous operation. The task result contains an  enumerable collection of
+        /// <see cref="ReviewDtoResponse"/> objects representing the reviews. If no reviews are available, the
+        /// collection will be empty.</returns>
+        Task<IEnumerable<ReviewDtoResponse>> ObtenerTodasLasReviews();
 
         /// <summary>
         /// Retrieves the review associated with the specified identifier.

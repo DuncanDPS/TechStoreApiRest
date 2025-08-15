@@ -57,14 +57,19 @@ namespace Servicios
         }
 
         // Todo: Terminar las implementacion de la interfaz y anadir las faltantes
-        public Task<ReviewDtoResponse> ObtenerReviewPorId(int id)
+        public async Task<ReviewDtoResponse> ObtenerReviewPorId(int id)
+        {
+            var review = await _contextDb.Reviews.FindAsync(id);
+            if (review == null) throw new NullReferenceException("La Review es nula");
+
+            return ReviewMapper.EntityToDtoResponse(review);
+        }
+
+        public async Task<IEnumerable<ReviewDtoResponse>> ObtenerTodasLasReviews()
         {
             throw new NotImplementedException();
         }
-        
-        public Task<ReviewDtoResponse> ObtenerTodasLasReviews()
-        {
-            throw new NotImplementedException();
-        }
+
+
     }
 }
