@@ -38,6 +38,10 @@ namespace TechStoreApiRest.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Este endpoint obtiene todas las reviews creadas
+        /// </summary>
+        /// <returns>devuelve una lista con todas las reviews</returns>
         [HttpGet("todas-las-reviews")]
         public async Task<IActionResult> ObtenerTodasLasReviews()
         {
@@ -45,6 +49,11 @@ namespace TechStoreApiRest.Controllers
             return Ok(await _reviewService.ObtenerTodasLasReviews());
         }
 
+        /// <summary>
+        /// Devuelve una review segun el id especificado 
+        /// </summary>
+        /// <param name="id">id especificado</param>
+        /// <returns>devuelve una review segun el id especificado</returns>
         [HttpGet("obtener-review/{id}")]
         public async Task<IActionResult> ObtenerReviewPorId(int id) 
         {
