@@ -39,6 +39,8 @@ try
     builder.Services.AddScoped<Servicios.IServicios.ITokenGeneratorService, Servicios.TokenGeneratorService>();
     // Registrar el servicio de Usuario
     builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, Servicios.UsuarioService>();
+    // Registrar el servicio de Review
+    builder.Services.AddScoped<Servicios.IServicios.IReviewService, Servicios.ReviewService>();
 
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
