@@ -56,11 +56,12 @@ namespace Servicios
             return ReviewMapper.EntityToDtoResponse(review);
         }
 
+        // Todo: Terminar las implementacion de la interfaz y anadir las faltantes
         public Task<ReviewDtoResponse> ObtenerReviewPorId(int id)
         {
             throw new NotImplementedException();
         }
-
+        
         public Task<ReviewDtoResponse> ObtenerTodasLasReviews()
         {
             throw new NotImplementedException();
