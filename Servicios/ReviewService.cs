@@ -94,8 +94,27 @@ namespace Servicios
             return await _contextDb.SaveChangesAsync() > 0;
         }
 
+        public async Task<ReviewDtoResponse> ActualizarReview(int id, ReviewDtoUpdateRequest review)
+        {
+            // buscar la review
+            var reviewExistente = await _contextDb.Reviews.FindAsync(id);
 
+            //validar que exista
+            if(reviewExistente == null) 
+            {
+               throw new NullReferenceException("La review no existe");
+            }
 
+            // cambios
+            reviewExistente.Titulo = review.Titulo;
+            reviewExistente.Calificacion = review.Calificacion;
+            reviewExistente.Comentario = review.Comentario;
 
+            // hacer la persistencia
+            await _contextDb.SaveChangesAsync();
+
+            // pasar la entidad a response
+            return ReviewMapper.EntityToDtoResponse(reviewExistente);
+        }
     }
 }

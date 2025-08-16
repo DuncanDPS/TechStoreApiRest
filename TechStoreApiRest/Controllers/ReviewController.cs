@@ -93,5 +93,32 @@ namespace TechStoreApiRest.Controllers
             
         }
 
+        [HttpPut("actualizar-review/{id}")]
+        public async Task<IActionResult> ActualizarReview(int id, ReviewDtoUpdateRequest reviewUpdate)
+        {
+            Log.Information("Intentando actualizar una review con el id: {0}", id);
+            if (!ModelState.IsValid)
+            {
+                Log.Warning("Modelo Invalido al registrar usuario: {@ModelState}", ModelState);
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                ReviewDtoResponse reviewActualizada = await _reviewService.ActualizarReview(id, reviewUpdate);
+                Log.Information("Actualizacion de review con id: {0} , hecha con exito", id);
+                return Ok(reviewActualizada);
+            }
+            catch (ArgumentException ex)
+            {
+                Log.Error(ex, "Error al actualizar la review con id: {id}", id);
+                return BadRequest(ex.Message);
+            }
+
+
+        }
+
+
+
     }
 }

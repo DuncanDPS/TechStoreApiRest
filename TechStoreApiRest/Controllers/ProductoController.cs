@@ -113,10 +113,7 @@ namespace TechStoreApiRest.Controllers
             }
 
             try
-            {
-                // obtener un producto con ese id
-                ProductoResponseDto response = await _productoService.ObtenerProductoPorId(id);
-          
+            {          
                 // se actualiza el producto
                 ProductoResponseDto productoActualizado = await _productoService.ActualizarProducto(id, producto);
                 Log.Information("Producto actualizado con exito, producto con id: {id}", id);

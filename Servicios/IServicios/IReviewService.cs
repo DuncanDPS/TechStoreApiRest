@@ -55,6 +55,16 @@ namespace Servicios.IServicios
         /// was successfully deleted; otherwise, <see langword="false"/>.</returns>
         Task<bool> EliminarReview(int id);
 
+        /// <summary>
+        /// Updates an existing review with the specified details.
+        /// </summary>
+        /// <remarks>This method performs validation on the input parameters and ensures that the review
+        /// exists before updating it.</remarks>
+        /// <param name="id">The unique identifier of the review to update. Must be a positive integer.</param>
+        /// <param name="review">The updated review details. Cannot be null and must contain valid data.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ReviewDtoResponse"/> object with the updated review details.</returns>
+        Task<ReviewDtoResponse> ActualizarReview(int id, ReviewDtoUpdateRequest review);
 
     }
 
