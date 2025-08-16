@@ -57,7 +57,7 @@ namespace Servicios
             return ReviewMapper.EntityToDtoResponse(review);
         }
 
-        // Todo: Terminar las implementacion de la interfaz y anadir las faltantes
+ 
         public async Task<ReviewDtoResponse> ObtenerReviewPorId(int id)
         {
             var review = await _contextDb.Reviews.FindAsync(id);
@@ -79,6 +79,18 @@ namespace Servicios
                 return reviews;
             }
         }
+
+        public async Task<bool> EliminarReview(int id)
+        {
+            // buscar la review mediante el id
+            Review? review = await _contextDb.Reviews.FindAsync(id);
+            if (review == null) throw new NullReferenceException("La Review no existe");
+
+            _contextDb.Remove(review);
+            return await _contextDb.SaveChangesAsync() > 0;
+        }
+
+
 
 
     }

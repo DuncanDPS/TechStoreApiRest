@@ -45,7 +45,15 @@ namespace Servicios.IServicios
         Task<ReviewDtoResponse> ObtenerReviewPorId(int id);
 
 
-        
+        /// <summary>
+        /// Deletes a review identified by its unique ID.
+        /// </summary>
+        /// <remarks>Use this method to remove a review from the system. Ensure the ID corresponds to an
+        /// existing review.</remarks>
+        /// <param name="id">The unique identifier of the review to be deleted. Must be a positive integer.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the review
+        /// was successfully deleted; otherwise, <see langword="false"/>.</returns>
+        Task<bool> EliminarReview(int id);
 
 
     }
