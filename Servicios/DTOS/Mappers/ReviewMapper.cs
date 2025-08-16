@@ -38,8 +38,6 @@ namespace Servicios.DTOS.Mappers
                 Comentario = review.Comentario,
                 FechaCreacion = review.FechaCreacion,
                 Id = review.Id,
-                NombreDeProducto = review.Producto != null ? review.Producto.Nombre : string.Empty,
-                NombreDeUsuario = review.Usuario != null ? review.Usuario.Nombre : string.Empty,
                 ProductoId = review.ProductoId,
                 UsuarioId = review.UsuarioId
                 

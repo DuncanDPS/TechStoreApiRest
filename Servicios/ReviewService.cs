@@ -25,39 +25,56 @@ namespace Servicios
 
         public async Task<ReviewDtoResponse> CrearReview(ReviewDtoAddRequest reviewDto)
         {
-            if (reviewDto == null) throw new ArgumentNullException(nameof(reviewDto),"La Review nula");
+            if (reviewDto == null)
+                throw new ArgumentNullException(nameof(reviewDto), "La Review es nula");
 
-            // validar los atributos de reviewDto
+            // Validar los atributos de reviewDto
             var validationContext = new ValidationContext(reviewDto);
             var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(reviewDto, validationContext, validationResults,true);
+            bool isValid = Validator.TryValidateObject(reviewDto, validationContext, validationResults, true);
 
             if (!isValid)
             {
                 var errores = string.Join("; ", validationResults.Select(r => r.ErrorMessage));
-                throw new ValidationException($"Errores de validacion: {errores}");
+                throw new ValidationException($"Errores de validación: {errores}");
             }
 
-            // mappeo
+            // Mappeo
             Review review = ReviewMapper.DtoAddRequestToEntity(reviewDto);
 
-            // buscamos los productos y usuarios usando su id
-            var producto = await _contextDb.Productos.FindAsync(reviewDto.ProductoId);
-            if (producto == null) throw new NullReferenceException("El producto es nulo");
+            // Buscar producto
+            Producto? producto = await _contextDb.Productos.FindAsync(reviewDto.ProductoId);
+            if (producto == null)
+                throw new KeyNotFoundException($"No se encontró el producto con ID: {reviewDto.ProductoId}");
 
             review.Producto = producto;
 
-            var usuario = await _contextDb.Usuarios.FindAsync(reviewDto.UsuarioId);
-            if (usuario == null) throw new NullReferenceException("El Usuario es nulo");
+            // Buscar usuario
+            Usuario? usuario = await _contextDb.Usuarios.FindAsync(reviewDto.UsuarioId);
+            if (usuario == null)
+                throw new KeyNotFoundException($"No se encontró el usuario con ID: {reviewDto.UsuarioId}");
 
             review.Usuario = usuario;
 
-            await _contextDb.Reviews.AddAsync(review);
-            await _contextDb.SaveChangesAsync();
-            return ReviewMapper.EntityToDtoResponse(review);
+            var reviewCreada = ReviewMapper.EntityToDtoResponse(review);
+            reviewCreada.NombreDeUsuario = usuario.Nombre;
+            reviewCreada.NombreDeProducto = producto.Nombre;
+
+            try
+            {
+                await _contextDb.Reviews.AddAsync(review);
+                await _contextDb.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Puedes loggear el error aquí si tienes un logger
+                throw new InvalidOperationException("Error al guardar la review en la base de datos.", ex);
+            }
+
+            return reviewCreada;
         }
 
- 
+
         public async Task<ReviewDtoResponse> ObtenerReviewPorId(int id)
         {
             var review = await _contextDb.Reviews.FindAsync(id);

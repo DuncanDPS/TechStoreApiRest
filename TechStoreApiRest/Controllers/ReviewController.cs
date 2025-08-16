@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Servicios.IServicios;
-using Servicios.DTOS;
 using Serilog;
+using Servicios.DTOS;
+using Servicios.IServicios;
+using System.ComponentModel.DataAnnotations;
 
 namespace TechStoreApiRest.Controllers
 {
@@ -33,9 +34,32 @@ namespace TechStoreApiRest.Controllers
                 return BadRequest(ModelState);
             }
 
-            ReviewDtoResponse response = await _reviewService.CrearReview(review);
-            Log.Information("Review Creada con exito");
-            return Ok(response);
+            try
+            {
+                ReviewDtoResponse response = await _reviewService.CrearReview(review);
+                Log.Information("Review Creada con exito");
+                return Ok(response);
+            }
+            catch (ValidationException ex)
+            {
+                Log.Warning(ex, "Error de validación al crear la review");
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                Log.Warning(ex, "Entidad no encontrada al crear la review");
+                return NotFound(new { error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                Log.Error(ex, "Error de base de datos al crear la review");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Sucedio un error inesperado al momento de crear una review");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = "Error interno del servidor." });
+            }
         }
 
         /// <summary>
@@ -93,6 +117,17 @@ namespace TechStoreApiRest.Controllers
             
         }
 
+        /// <summary>
+        /// Updates an existing review with the specified ID using the provided update data.
+        /// </summary>
+        /// <remarks>This method validates the input model state before attempting the update. If the
+        /// model state is invalid,  a <see langword="BadRequest"/> response is returned. The method logs the
+        /// operation's progress and errors.</remarks>
+        /// <param name="id">The unique identifier of the review to be updated.</param>
+        /// <param name="reviewUpdate">An object containing the updated review data. Must not be null and must satisfy validation requirements.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.  Returns <see langword="Ok"/> with
+        /// the updated review data if the update is successful. Returns <see langword="BadRequest"/> if the model state
+        /// is invalid or if the update fails due to invalid input.</returns>
         [HttpPut("actualizar-review/{id}")]
         public async Task<IActionResult> ActualizarReview(int id, ReviewDtoUpdateRequest reviewUpdate)
         {
