@@ -65,6 +65,33 @@ namespace TechStoreApiRest.Controllers
             return Ok(review);
         }
 
+        /// <summary>
+        /// Deletes a review with the specified identifier.
+        /// </summary>
+        /// <remarks>This method attempts to delete a review identified by <paramref name="id"/>.  If the
+        /// review is found and successfully deleted, a no-content response is returned.  If the review does not exist,
+        /// a not-found response is returned.</remarks>
+        /// <param name="id">The unique identifier of the review to delete. Must be a positive integer.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.  Returns <see
+        /// cref="NoContentResult"/> if the review was successfully deleted, or <see cref="NotFoundResult"/> if no
+        /// review with the specified identifier exists.</returns>
+        [HttpDelete("eliminar-review/{id}")]
+        public async Task<IActionResult> EliminarReview(int id)
+        {
+            Log.Information("Intentando eliminar una review con id: {0}", id);
+            var review = await _reviewService.EliminarReview(id);
+            if (review)
+            {
+                Log.Information("Review con id: {0} eliminada con exito", id);
+                return NoContent();
+            }
+            else
+            {
+                Log.Warning("No se pudo eliminar la review con id: {0}", id);
+                return NotFound();
+            }
+            
+        }
 
     }
 }

@@ -84,7 +84,11 @@ namespace Servicios
         {
             // buscar la review mediante el id
             Review? review = await _contextDb.Reviews.FindAsync(id);
-            if (review == null) throw new NullReferenceException("La Review no existe");
+            if (review == null) {
+                return false;
+                
+            }
+            
 
             _contextDb.Remove(review);
             return await _contextDb.SaveChangesAsync() > 0;
