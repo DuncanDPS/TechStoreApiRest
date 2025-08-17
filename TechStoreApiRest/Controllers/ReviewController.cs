@@ -149,8 +149,6 @@ namespace TechStoreApiRest.Controllers
                 Log.Error(ex, "Error al actualizar la review con id: {id}", id);
                 return BadRequest(ex.Message);
             }
-
-
         }
 
 
