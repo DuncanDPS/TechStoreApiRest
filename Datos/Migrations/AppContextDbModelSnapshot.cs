@@ -76,6 +76,45 @@ namespace Datos.Migrations
                     b.ToTable("Productos");
                 });
 
+            modelBuilder.Entity("Entidades.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Calificacion")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comentario")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Entidades.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
@@ -119,6 +158,25 @@ namespace Datos.Migrations
                         .IsRequired();
 
                     b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("Entidades.Review", b =>
+                {
+                    b.HasOne("Entidades.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Entidades.Categoria", b =>

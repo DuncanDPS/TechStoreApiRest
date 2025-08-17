@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Datos.Migrations
 {
     [DbContext(typeof(AppContextDb))]
-    [Migration("20250801204919_dbSetUsuariosAniadida")]
-    partial class dbSetUsuariosAniadida
+    [Migration("20250815010559_initialMigrate")]
+    partial class initialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,7 @@ namespace Datos.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Precio")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Stock")
@@ -78,6 +79,45 @@ namespace Datos.Migrations
                     b.ToTable("Productos");
                 });
 
+            modelBuilder.Entity("Entidades.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Calificacion")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comentario")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Entidades.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
@@ -86,11 +126,13 @@ namespace Datos.Migrations
 
                     b.Property<string>("Apellidos")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ContraseniaHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -98,7 +140,8 @@ namespace Datos.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Rol")
                         .IsRequired()
@@ -118,6 +161,25 @@ namespace Datos.Migrations
                         .IsRequired();
 
                     b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("Entidades.Review", b =>
+                {
+                    b.HasOne("Entidades.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Entidades.Categoria", b =>

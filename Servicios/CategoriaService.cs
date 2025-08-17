@@ -24,7 +24,7 @@ namespace Servicios
             _context = context;
         }
 
-        // TODO: Implementar metodo para actualizar Cat
+        
         public async Task<CategoriaResponseDto> ActualizarCategoria(Guid id, CategoriaUpdateRequestDto categoriaUpdateReq)
         {
             if (categoriaUpdateReq == null) throw new ArgumentNullException(nameof(categoriaUpdateReq), "La categoria no puede ser nula");
