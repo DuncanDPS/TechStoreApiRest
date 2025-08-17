@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Servicios.DTOS;
@@ -24,6 +25,7 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="review">objecto para crear una review</param>
         /// <returns>devuelve una review creada</returns>
+        [Authorize(Roles = "Admin,Cliente")]
         [HttpPost("crear-review")]
         public async Task<IActionResult> CrearReview(ReviewDtoAddRequest review)
         {
@@ -66,6 +68,7 @@ namespace TechStoreApiRest.Controllers
         /// Este endpoint obtiene todas las reviews creadas
         /// </summary>
         /// <returns>devuelve una lista con todas las reviews</returns>
+        [Authorize(Roles = "Admin,Cliente")]
         [HttpGet("todas-las-reviews")]
         public async Task<IActionResult> ObtenerTodasLasReviews()
         {
@@ -78,6 +81,7 @@ namespace TechStoreApiRest.Controllers
         /// </summary>
         /// <param name="id">id especificado</param>
         /// <returns>devuelve una review segun el id especificado</returns>
+        [Authorize(Roles = "Admin,Cliente")]
         [HttpGet("obtener-review/{id}")]
         public async Task<IActionResult> ObtenerReviewPorId(int id) 
         {
@@ -99,6 +103,7 @@ namespace TechStoreApiRest.Controllers
         /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.  Returns <see
         /// cref="NoContentResult"/> if the review was successfully deleted, or <see cref="NotFoundResult"/> if no
         /// review with the specified identifier exists.</returns>
+        [Authorize(Roles = "Admin,Cliente")]
         [HttpDelete("eliminar-review/{id}")]
         public async Task<IActionResult> EliminarReview(int id)
         {
@@ -128,6 +133,7 @@ namespace TechStoreApiRest.Controllers
         /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.  Returns <see langword="Ok"/> with
         /// the updated review data if the update is successful. Returns <see langword="BadRequest"/> if the model state
         /// is invalid or if the update fails due to invalid input.</returns>
+        [Authorize(Roles = "Admin,Cliente")]
         [HttpPut("actualizar-review/{id}")]
         public async Task<IActionResult> ActualizarReview(int id, ReviewDtoUpdateRequest reviewUpdate)
         {
