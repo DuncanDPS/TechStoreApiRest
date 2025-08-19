@@ -43,6 +43,59 @@ namespace Datos.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("Entidades.Orden", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Ordenes");
+                });
+
+            modelBuilder.Entity("Entidades.OrdenItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrdenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProductoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("OrdenItems");
+                });
+
             modelBuilder.Entity("Entidades.Producto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -149,6 +202,36 @@ namespace Datos.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("Entidades.Orden", b =>
+                {
+                    b.HasOne("Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Entidades.OrdenItem", b =>
+                {
+                    b.HasOne("Entidades.Orden", "Orden")
+                        .WithMany("Items")
+                        .HasForeignKey("OrdenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entidades.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orden");
+
+                    b.Navigation("Producto");
+                });
+
             modelBuilder.Entity("Entidades.Producto", b =>
                 {
                     b.HasOne("Entidades.Categoria", "Categoria")
@@ -182,6 +265,11 @@ namespace Datos.Migrations
             modelBuilder.Entity("Entidades.Categoria", b =>
                 {
                     b.Navigation("Productos");
+                });
+
+            modelBuilder.Entity("Entidades.Orden", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
