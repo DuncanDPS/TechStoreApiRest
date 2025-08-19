@@ -118,8 +118,7 @@ namespace TechStoreApiRest.Controllers
             {
                 Log.Warning("No se pudo eliminar la review con id: {0}", id);
                 return NotFound();
-            }
-            
+            }   
         }
 
         /// <summary>
