@@ -1,3 +1,4 @@
+using Entidades.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,9 +13,9 @@ namespace Entidades
         public Guid Id { get; set; }
         public Guid UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
-        public DateTime FechaCreacion { get; set; } = DateTime.Now;
+        public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
         public decimal Total { get; set; }
-        public string Estado { get; set; }
+        public OrdenEstado Estado { get; set; }
         public ICollection<OrdenItem> Items { get; set; }
 
     }
