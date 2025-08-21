@@ -10,7 +10,7 @@ namespace Servicios.IServicios
     /// <summary>
     /// 
     /// </summary>
-    internal interface IOrdenService
+    public interface IOrdenService
     {
         
     }
