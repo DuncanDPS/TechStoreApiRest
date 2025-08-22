@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades;
+using Servicios.DTOS;
 
 namespace Servicios.IServicios
 {
@@ -12,6 +13,7 @@ namespace Servicios.IServicios
     /// </summary>
     public interface IOrdenService
     {
-        
+        // crear orden
+        Task<OrdenDtoResponse> CrearOrden(OrdenDtoRequest orden);
     }
 }
