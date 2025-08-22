@@ -16,7 +16,7 @@ namespace Entidades
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
         public decimal Total { get; set; }
         public OrdenEstado Estado { get; set; }
-        public ICollection<OrdenItem> Items { get; set; }
+        public ICollection<OrdenItem>? Items { get; set; }
 
     }
 

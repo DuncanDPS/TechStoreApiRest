@@ -18,6 +18,5 @@ namespace Servicios.DTOS
         public decimal Total { get; set; }
         public OrdenEstado Estado { get; set; }
         public ICollection<OrdenItemDtoResponse> Items { get; set; }
-
     }
 }

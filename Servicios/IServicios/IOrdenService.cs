@@ -14,6 +14,6 @@ namespace Servicios.IServicios
     public interface IOrdenService
     {
         // crear orden
-        Task<OrdenDtoResponse> CrearOrden(OrdenDtoRequest orden);
+        //Task<OrdenDtoResponse> CrearOrden(OrdenDtoRequest orden);
     }
 }
