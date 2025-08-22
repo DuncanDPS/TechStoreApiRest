@@ -6,6 +6,7 @@ using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
+using Servicios.Servicios;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -32,15 +33,15 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     // Registrar el servicio de productos
-    builder.Services.AddScoped<Servicios.IServicios.IProductoService, Servicios.ProductoService>();
+    builder.Services.AddScoped<Servicios.IServicios.IProductoService, ProductoService>();
     // Registra el servicio de categorias
-    builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, Servicios.CategoriaService>();
+    builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, CategoriaService>();
     // Registra el servicio de TokenGenerator
-    builder.Services.AddScoped<Servicios.IServicios.ITokenGeneratorService, Servicios.TokenGeneratorService>();
+    builder.Services.AddScoped<Servicios.IServicios.ITokenGeneratorService, TokenGeneratorService>();
     // Registrar el servicio de Usuario
-    builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, Servicios.UsuarioService>();
+    builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, UsuarioService>();
     // Registrar el servicio de Review
-    builder.Services.AddScoped<Servicios.IServicios.IReviewService, Servicios.ReviewService>();
+    builder.Services.AddScoped<Servicios.IServicios.IReviewService, ReviewService>();
 
     builder.Services.AddControllers()
         .AddJsonOptions(options =>

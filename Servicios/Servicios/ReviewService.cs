@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Servicios
+namespace Servicios.Servicios
 {
     public class ReviewService : IReviewService
     {
@@ -40,7 +40,7 @@ namespace Servicios
             }
 
             // Mappeo
-            Review review = ReviewMapper.DtoAddRequestToEntity(reviewDto);
+            Review review = reviewDto.DtoAddRequestToEntity();
 
             // Buscar producto
             Producto? producto = await _contextDb.Productos.FindAsync(reviewDto.ProductoId);
@@ -56,7 +56,7 @@ namespace Servicios
 
             review.Usuario = usuario;
 
-            var reviewCreada = ReviewMapper.EntityToDtoResponse(review);
+            var reviewCreada = review.EntityToDtoResponse();
             reviewCreada.NombreDeUsuario = usuario.Nombre;
             reviewCreada.NombreDeProducto = producto.Nombre;
 
@@ -80,7 +80,7 @@ namespace Servicios
             var review = await _contextDb.Reviews.FindAsync(id);
             if (review == null) throw new NullReferenceException("La Review es nula");
 
-            return ReviewMapper.EntityToDtoResponse(review);
+            return review.EntityToDtoResponse();
         }
 
         public async Task<IEnumerable<ReviewDtoResponse>> ObtenerTodasLasReviews()
@@ -129,7 +129,7 @@ namespace Servicios
             await _contextDb.SaveChangesAsync();
 
             // pasar la entidad a response
-            return ReviewMapper.EntityToDtoResponse(reviewExistente);
+            return reviewExistente.EntityToDtoResponse();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Servicios
+namespace Servicios.Servicios
 {
     public class TokenGeneratorService : ITokenGeneratorService
     {
