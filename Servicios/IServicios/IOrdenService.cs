@@ -9,7 +9,7 @@ using Servicios.DTOS;
 namespace Servicios.IServicios
 {
     /// <summary>
-    /// 
+    /// Esta interfaz define los métodos para manejar operaciones relacionadas con órdenes.
     /// </summary>
     public interface IOrdenService
     {
