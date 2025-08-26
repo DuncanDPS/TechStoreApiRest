@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Datos;
+using Servicios.DTOS.Mappers;
+using Entidades;
+using TechStoreApiRest.Servicios.DTOS.Mappers;
 
 namespace Servicios.Servicios
 {
@@ -19,7 +22,7 @@ namespace Servicios.Servicios
         }
 
 
-        public Task<OrdenDtoResponse> CrearOrden(OrdenDtoAddRequest orden)
+        public async Task<OrdenDtoResponse> CrearOrden(OrdenDtoAddRequest orden)
         {
             // Validar que la orden no sea nula
             if (orden == null)
@@ -34,10 +37,16 @@ namespace Servicios.Servicios
                 throw new ArgumentException("El usuario especificado no existe.");
             }
 
-            //
-            
-            
-            throw new NotImplementedException();
+            // convertir Dto a entidad
+            Orden ordenEntidad = OrdenMapper.DtoAddRequestToEntity(orden);
+
+            ordenEntidad.Usuario = _context.Usuarios.Find(orden.UsuarioId);
+            if(ordenEntidad.Usuario == null)
+            {
+                throw new ArgumentNullException();
+            }
+            await _context.Ordenes.AddAsync(ordenEntidad);
+            await _context.SaveChangesAsync();
         }
     }
 }
