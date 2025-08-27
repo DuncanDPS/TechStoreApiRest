@@ -25,7 +25,16 @@ namespace TechStoreApiRest.Servicios.DTOS.Mappers
         // entity to DtoResponse
         public static OrdenDtoResponse EntityToDtoResponse(Orden orden)
         {
-
+            return new OrdenDtoResponse
+            {
+                Id = orden.Id,
+                Estado = orden.Estado,
+                FechaCreacion = orden.FechaCreacion,
+                Total = orden.Total,
+                 Items = (ICollection<OrdenItemDtoResponse>)orden.Items,
+                 Usuario = orden.Usuario,
+                 UsuarioId = orden.UsuarioId
+            };
         }
 
     }

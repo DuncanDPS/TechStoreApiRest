@@ -47,6 +47,8 @@ namespace Servicios.Servicios
             }
             await _context.Ordenes.AddAsync(ordenEntidad);
             await _context.SaveChangesAsync();
+
+            return OrdenMapper.EntityToDtoResponse(ordenEntidad);
         }
     }
 }
