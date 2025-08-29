@@ -16,8 +16,13 @@ namespace TechStoreApiRest.Servicios.DTOS.Mappers
             {
                 UsuarioId = orden.UsuarioId,
                 Estado = orden.Estado,
-                Items = (ICollection<OrdenItem>)orden.Items,
-                Total = orden.Total 
+                Total = orden.Total,
+                Items = orden.Items?.Select(itemDto => new OrdenItem
+                {
+                    ProductoId = itemDto.ProductoId,
+                    Cantidad = itemDto.Cantidad,
+                    PrecioUnitario = itemDto.PrecioUnitario,
+                }).ToList()
             };
         }
 
@@ -31,9 +36,17 @@ namespace TechStoreApiRest.Servicios.DTOS.Mappers
                 Estado = orden.Estado,
                 FechaCreacion = orden.FechaCreacion,
                 Total = orden.Total,
-                 Items = (ICollection<OrdenItemDtoResponse>)orden.Items,
                  Usuario = orden.Usuario,
-                 UsuarioId = orden.UsuarioId
+                 UsuarioId = orden.UsuarioId,
+                 Items = orden.Items?.Select(item => new OrdenItemDtoResponse
+                 {
+                      Id = item.Id,
+                      Cantidad = item.Cantidad,
+                      OrdenId = item.OrdenId,
+                      PrecioUnitario = item.PrecioUnitario,
+                      ProductoId = item.ProductoId,
+                      ProductoNombre = item.Producto?.Nombre
+                 }).ToList()
             };
         }
 
