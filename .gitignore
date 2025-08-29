@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
   
 # Ignorar migraciones del proyecto Datos
-Datos/Migrations/
+Datos/Migrations
