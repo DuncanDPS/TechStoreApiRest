@@ -42,6 +42,9 @@ try
     builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, UsuarioService>();
     // Registrar el servicio de Review
     builder.Services.AddScoped<Servicios.IServicios.IReviewService, ReviewService>();
+    // Registrar el servicio de Orden
+    builder.Services.AddScoped<Servicios.IServicios.IOrdenService,
+        OrdenService>();
 
     builder.Services.AddControllers()
         .AddJsonOptions(options =>

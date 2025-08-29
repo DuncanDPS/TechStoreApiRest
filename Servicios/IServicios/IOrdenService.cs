@@ -13,7 +13,16 @@ namespace Servicios.IServicios
     /// </summary>
     public interface IOrdenService
     {
-        // crear orden
+        /// <summary>
+        /// Creates a new order based on the provided order details.
+        /// </summary>
+        /// <remarks>Ensure that the <paramref name="orden"/> parameter contains valid data before calling
+        /// this method. This method performs validation and may throw exceptions if the input is invalid.</remarks>
+        /// <param name="orden">The order details to be added. This must include all required fields for creating an order.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an <see
+        /// cref="OrdenDtoResponse"/> object with the details of the created order.</returns>
         Task<OrdenDtoResponse> CrearOrden(OrdenDtoAddRequest orden);
+
+
     }
 }
