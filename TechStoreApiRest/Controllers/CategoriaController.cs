@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Servicios.DTOS;
 using Servicios.DTOS.Mappers;
 using Serilog;
+using Servicios.IServicios;
 
 
 
@@ -15,8 +16,8 @@ namespace TechStoreApiRest.Controllers
     public class CategoriaController : ControllerBase
     {
         // Inyeccion de dependencias del servicio de categoria
-        private readonly Servicios.IServicios.ICategoriaService _categoriaService;
-        public CategoriaController(Servicios.IServicios.ICategoriaService categoriaService)
+        private readonly ICategoriaService _categoriaService;
+        public CategoriaController(ICategoriaService categoriaService)
         {
             _categoriaService = categoriaService;
         }
@@ -34,7 +35,7 @@ namespace TechStoreApiRest.Controllers
             // validamos el modelo recibido
             if (!ModelState.IsValid)
             {
-                Log.Warning("Modelo Invalido al registrar usuario: {@ModelState}", ModelState);
+                Log.Warning("Modelo Invalido al registrar categoria: {@ModelState}", ModelState);
                 return BadRequest(ModelState);// code 400
             }
             try
