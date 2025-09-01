@@ -6,6 +6,7 @@ using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
+using Servicios.Servicios;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -27,20 +28,23 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    // Configurar la cadena de conexión a la base de datos
+    // Configurar la cadena de conexiï¿½n a la base de datos
     builder.Services.AddDbContext<AppContextDb>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     // Registrar el servicio de productos
-    builder.Services.AddScoped<Servicios.IServicios.IProductoService, Servicios.ProductoService>();
+    builder.Services.AddScoped<Servicios.IServicios.IProductoService, ProductoService>();
     // Registra el servicio de categorias
-    builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, Servicios.CategoriaService>();
+    builder.Services.AddScoped<Servicios.IServicios.ICategoriaService, CategoriaService>();
     // Registra el servicio de TokenGenerator
-    builder.Services.AddScoped<Servicios.IServicios.ITokenGeneratorService, Servicios.TokenGeneratorService>();
+    builder.Services.AddScoped<Servicios.IServicios.ITokenGeneratorService, TokenGeneratorService>();
     // Registrar el servicio de Usuario
-    builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, Servicios.UsuarioService>();
+    builder.Services.AddScoped<Servicios.IServicios.IUsuarioService, UsuarioService>();
     // Registrar el servicio de Review
-    builder.Services.AddScoped<Servicios.IServicios.IReviewService, Servicios.ReviewService>();
+    builder.Services.AddScoped<Servicios.IServicios.IReviewService, ReviewService>();
+    // Registrar el servicio de Orden
+    builder.Services.AddScoped<Servicios.IServicios.IOrdenService,
+        OrdenService>();
 
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
@@ -58,19 +62,20 @@ try
 
 
     // configuracion JWT
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-        };
-    });
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+            };
+        });
 
     builder.Services.AddAuthorization(options =>
     {

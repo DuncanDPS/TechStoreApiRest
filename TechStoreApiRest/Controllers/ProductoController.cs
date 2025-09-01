@@ -77,7 +77,7 @@ namespace TechStoreApiRest.Controllers
             Log.Information("Intentando Crear un producto: {Nombre}", productoDto.Nombre);
             if (!ModelState.IsValid)
             {
-                Log.Warning("Modelo Invalido al registrar usuario: {@ModelState}", ModelState);
+                Log.Warning("Modelo Invalido al registrar producto: {@ModelState}", ModelState);
                 return BadRequest(ModelState);
             }
             try

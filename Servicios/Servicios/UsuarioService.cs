@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Servicios.DTOS;
 using Servicios.DTOS.Mappers;
 
-namespace Servicios
+namespace Servicios.Servicios
 {
     public class UsuarioService : IUsuarioService
     {

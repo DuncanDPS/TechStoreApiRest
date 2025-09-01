@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Servicios.DTOS;
 using Servicios.DTOS.Mappers;
 
-namespace Servicios
+namespace Servicios.Servicios
 {
     public class ProductoService : IServicios.IProductoService
     {
@@ -55,7 +55,7 @@ namespace Servicios
             await _context.Productos.AddAsync(ProductoEntidad);
             await _context.SaveChangesAsync();
             await _context.Entry(ProductoEntidad).Reference(p => p.Categoria).LoadAsync();
-            return ProductoMapper.EntityToDtoResponse(ProductoEntidad);
+            return ProductoEntidad.EntityToDtoResponse();
         }
 
         
@@ -76,7 +76,7 @@ namespace Servicios
 
             await _context.SaveChangesAsync(); // guardamos los cambios en la base de datos
 
-            return ProductoMapper.EntityToDtoResponse(productoExistente); ;  // devolvemos el producto actualizado
+            return productoExistente.EntityToDtoResponse(); ;  // devolvemos el producto actualizado
         }
 
         public async Task<bool> EliminarProducto(Guid id)
@@ -105,7 +105,7 @@ namespace Servicios
             {
                 throw new ArgumentException("Producto no encontrado.");
             }
-            return ProductoMapper.EntityToDtoResponse(producto); // devolvemos el producto encontrado
+            return producto.EntityToDtoResponse(); // devolvemos el producto encontrado
         }
 
         // TODO: Crear un metodo de servicio para obtener el producto por su nombre como opcional

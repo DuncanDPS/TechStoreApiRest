@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Servicios.DTOS;
 using Servicios.DTOS.Mappers;
 
-namespace Servicios
+namespace Servicios.Servicios
 {
     public class CategoriaService : ICategoriaService
     {
@@ -40,7 +40,7 @@ namespace Servicios
 
             // guardar cambios
             await _context.SaveChangesAsync();
-            return CategoriaMapper.CategoriaEntityToResponseDto(categoriaExiste);
+            return categoriaExiste.CategoriaEntityToResponseDto();
         }
 
         public async Task<CategoriaResponseDto> CrearCategoria(CategoriaAddRequestDto categoria)
@@ -56,10 +56,10 @@ namespace Servicios
                 throw new ArgumentException("El nombre de la categoria no puede estar vacío.");
             }
 
-            Categoria categoriaEntity = CategoriaMapper.CategoriaAddReqToEntity(categoria);
+            Categoria categoriaEntity = categoria.CategoriaAddReqToEntity();
             await _context.Categorias.AddAsync(categoriaEntity);
             await _context.SaveChangesAsync();
-            return CategoriaMapper.CategoriaEntityToResponseDto(categoriaEntity);
+            return categoriaEntity.CategoriaEntityToResponseDto();
         }
 
 
@@ -75,7 +75,7 @@ namespace Servicios
             }
 
             // si existe, la devolvemos
-            return CategoriaMapper.CategoriaEntityToResponseDto(categoria);
+            return categoria.CategoriaEntityToResponseDto();
         }
 
         public async Task<IEnumerable<CategoriaResponseDto>> ObtenerTodasLasCategorias()

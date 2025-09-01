@@ -17,6 +17,8 @@ namespace Datos
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
+        public DbSet<OrdenItem> OrdenItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
