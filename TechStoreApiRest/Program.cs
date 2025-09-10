@@ -9,6 +9,7 @@ using Serilog.Events;
 using Servicios.Servicios;
 using System.Security.Cryptography;
 using System.Text;
+using TechStoreApiRest.Paypal;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,6 +46,12 @@ try
     // Registrar el servicio de Orden
     builder.Services.AddScoped<Servicios.IServicios.IOrdenService,
         OrdenService>();
+
+    // paypal
+    builder.Services.Configure<PaypalSettings>(
+    builder.Configuration.GetSection("Paypal"));
+
+
 
     builder.Services.AddControllers()
         .AddJsonOptions(options =>
